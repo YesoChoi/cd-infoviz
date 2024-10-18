@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CountrySelector from "./CountrySelector";
 import WorkerDiagram from "./WorkerDiagram";
+import * as S from "./styles";
 
 const countriesData = [
   { country: "Vietnam", totalWorkers: 3263, lineWorkers: 2410 },
@@ -19,7 +20,7 @@ const WorkerDisplay = () => {
     : null;
 
   return (
-    <div>
+    <S.Container>
       <CountrySelector
         countries={countriesData.map((c) => c.country)}
         onSelectCountry={setSelectedCountry}
@@ -30,7 +31,7 @@ const WorkerDisplay = () => {
           lineWorkers={selectedData.lineWorkers}
         />
       )}
-    </div>
+    </S.Container>
   );
 };
 
