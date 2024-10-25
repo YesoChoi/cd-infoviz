@@ -1,4 +1,3 @@
-// pages/index.js
 import ShoeWorkerDisplay from '/components/v2';
 
 export default function Home() {
