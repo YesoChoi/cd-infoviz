@@ -1,10 +1,17 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-  body {
+  html, body {
     margin: 0;
     padding: 0;
+    height: 100vh !important;
     box-sizing: border-box;
+  }
+
+  *{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
 `;
 

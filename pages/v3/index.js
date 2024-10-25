@@ -1,18 +1,14 @@
-import React, { Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
-import Globe from '../../components/v3/globe'
+import React from 'react'
+import MapScene from '../../components/v3/map'
 
-const GlobePage = () => {
+const mapUrl = '/texture/map_outline.png' // 실제 지도 이미지 경로로 변경해주세요
+
+const V3Page = () => {
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
-      <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
-        <Suspense fallback={null}>
-          <Globe />
-        </Suspense>
-      </Canvas>
+    <div style={{ height: '100%', overflow: 'hidden' }}>
+      <MapScene mapUrl={mapUrl} />
     </div>
   )
 }
 
-export default GlobePage
-
+export default V3Page

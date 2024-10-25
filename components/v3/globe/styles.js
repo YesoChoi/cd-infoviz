@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 
-export const GlobeContainer = styled.div`
+export const MapContainer = styled.div`
   width: 100%;
   height: 100vh;
   background-color: #000;
 `
+
 
