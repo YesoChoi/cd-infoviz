@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import WorkerDiagram from './WorkerDiagram';
-import { shoeData, workerData } from './data';
+import { shoeData, workerData } from './_data';
 import  * as S from './styles';
 
 export default function ShoeWorkerDisplay() {

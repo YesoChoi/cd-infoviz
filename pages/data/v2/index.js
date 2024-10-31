@@ -1,4 +1,5 @@
-import ShoeWorkerDisplay from '/components/v2';
+import ShoeWorkerDisplay from '/components/data/v2';
+import { FlexCenterStyle, WholeContainer } from '@/styles/common';
 
 export default function Home() {
   return (

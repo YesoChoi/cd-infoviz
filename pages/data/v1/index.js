@@ -1,4 +1,4 @@
-import WorkerDisplay from "/components/v1";
+import WorkerDisplay from "/components/data/v1";
 
 export default function Home() {
   return (
