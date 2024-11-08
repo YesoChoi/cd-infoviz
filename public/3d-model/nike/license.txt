@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nike Airforce x OFF WHITE
+* source:	https://sketchfab.com/3d-models/nike-airforce-x-off-white-fc49abd229294ae9bece69e32ac47098
+* author:	ion.fbx (https://sketchfab.com/ionfbx)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nike Airforce x OFF WHITE" (https://sketchfab.com/3d-models/nike-airforce-x-off-white-fc49abd229294ae9bece69e32ac47098) by ion.fbx (https://sketchfab.com/ionfbx) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

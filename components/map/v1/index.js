@@ -4,6 +4,7 @@ import { TextureLoader, DoubleSide, Vector3, NearestFilter, LinearMipmapLinearFi
 import { OrbitControls, Stars } from '@react-three/drei'
 import { MapContainer } from './styles'
 import { CITIES } from '@/utils/constant/test'
+import City from './city'
 import * as THREE from 'three'
 
 
@@ -22,39 +23,6 @@ const COORDINATES = [{
   lng: 51.9
 }]
 
-const City = ({ position, totalWorkers }) => {
-  const workerDots = useMemo(() => {
-    const dots = []
-    const radius = 0.05 // 도시 주변 분포 반경
-    const workerCount = Math.ceil(totalWorkers / 100) // 100명당 1개의 점으로 표현
-
-    for (let i = 0; i < workerCount; i++) {
-      // 원형으로 랜덤하게 분포
-      const angle = Math.random() * Math.PI * 2
-      const r = Math.sqrt(Math.random()) * radius // 제곱근을 사용하여 균일한 분포 생성
-      const x = position.x + r * Math.cos(angle)
-      const y = position.y + r * Math.sin(angle)
-      
-      dots.push(new Vector3(x, y, 0.001))
-    }
-    return dots
-  }, [position, totalWorkers])
-
-  return (
-    <>
-      {workerDots.map((pos, index) => (
-        <mesh key={index} position={pos}>
-          <sphereGeometry args={[0.003, 16, 16]} />
-          <meshStandardMaterial 
-            color="#fefce7"
-            metalness={0.8}
-            roughness={0.2}
-          />
-        </mesh>
-      ))}
-    </>
-  )
-}
 
 const Map = ({ mapUrl }) => {
   const mesh = useRef()
