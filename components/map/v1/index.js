@@ -12,26 +12,49 @@ const COORDINATES = [{
   lng: 51.9
 },{
   lat: 60.9,
-  lng: -149.3,
+  lng: 210.7,
 },{
   lat: -19.60,
-  lng: -149.3,
+  lng: 210.7,
 },
 {
   lat: -19.60,
   lng: 51.9
 }]
 
-const City = ({ position, size }) => (
-  <mesh position={position}>
-    <sphereGeometry args={[size, 32, 32]} />
-    <meshStandardMaterial color="#fefce7"
-      metalness={0.8}
-      roughness={0.2}
-    />
-  </mesh>
-)
+const City = ({ position, totalWorkers }) => {
+  const workerDots = useMemo(() => {
+    const dots = []
+    const radius = 0.05 // 도시 주변 분포 반경
+    const workerCount = Math.ceil(totalWorkers / 100) // 100명당 1개의 점으로 표현
 
+    for (let i = 0; i < workerCount; i++) {
+      // 원형으로 랜덤하게 분포
+      const angle = Math.random() * Math.PI * 2
+      const r = Math.sqrt(Math.random()) * radius // 제곱근을 사용하여 균일한 분포 생성
+      const x = position.x + r * Math.cos(angle)
+      const y = position.y + r * Math.sin(angle)
+      
+      dots.push(new Vector3(x, y, 0.001))
+    }
+    return dots
+  }, [position, totalWorkers])
+
+  return (
+    <>
+      {workerDots.map((pos, index) => (
+        <mesh key={index} position={pos}>
+          <sphereGeometry args={[0.003, 16, 16]} />
+          <meshStandardMaterial 
+            color="#fefce7"
+            metalness={0.8}
+            roughness={0.2}
+          />
+        </mesh>
+      ))}
+    </>
+  )
+}
 
 const Map = ({ mapUrl }) => {
   const mesh = useRef()
@@ -72,23 +95,15 @@ const Map = ({ mapUrl }) => {
     // 경도를 x 좌표로 변환
     const x = ((lng - minLng) / (maxLng - minLng) - 0.5) * meshSize.width
 
-    const xOffset = -.679;
-    const yOffset = -0.025;
-    return new Vector3(x + xOffset, y + yOffset, 0.001)
-  }
-
-  const calculateCitySize = (totalWorkers) => {
-    const minSize = 0.0025
-    const maxSize = 0.025
-    const maxWorkers = Math.max(...CITIES.map(city => city.totalWorkers))
-    return minSize + (totalWorkers / maxWorkers) * (maxSize - minSize)
+    // const xOffset = -.679;
+    // const yOffset = -0.025;
+    return new Vector3(x, y, 0.001)
   }
 
   const citiesWithPositions = useMemo(() => 
     CITIES.map(city => ({
       ...city,
-      position: latLngToPosition(city.lat, city.lng),
-      size: calculateCitySize(city.totalWorkers)
+      position: latLngToPosition(city.lat, city.lng)
     })),
     [meshSize]
   )
@@ -100,16 +115,18 @@ const Map = ({ mapUrl }) => {
         <meshBasicMaterial 
           map={texture} 
           side={DoubleSide}
-          toneMapped={false} // 색상 보정 비활성화로 원본 색상 유지
+          toneMapped={false}
         />
       </mesh>
       {citiesWithPositions.map((city, index) => (
-        <City key={index} position={city.position} size={city.size} />
+        <City key={index} 
+          totalWorkers={city.totalWorkers}
+          position={city.position}
+        />
       ))}
     </group>
   )
 }
-
 
 const MapScene = ({ mapUrl }) => {
   return (
@@ -136,6 +153,5 @@ const MapScene = ({ mapUrl }) => {
     </MapContainer>
   )
 }
-
 
 export default MapScene
