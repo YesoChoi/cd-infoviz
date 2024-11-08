@@ -5,6 +5,8 @@ import { OrbitControls, Stars } from '@react-three/drei'
 import { MapContainer } from './styles'
 import { CITIES } from '@/utils/constant/test'
 import City from './city'
+
+import UI from '@/components/ui'
 import * as THREE from 'three'
 
 
@@ -118,6 +120,7 @@ const MapScene = ({ mapUrl }) => {
         <OrbitControls enableZoom={true} enablePan={false} />
         <Stars />
       </Canvas>
+      <UI />
     </MapContainer>
   )
 }
