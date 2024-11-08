@@ -1,6 +1,6 @@
 import MapScene from '../../../components/map/v1'
 
-const mapUrl = '/texture/map_outline.png' // 실제 지도 이미지 경로로 변경해주세요
+const mapUrl = '/texture/map_texture.png' // 실제 지도 이미지 경로로 변경해주세요
 
 const V3Page = () => {
   return (

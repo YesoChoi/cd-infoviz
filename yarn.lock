@@ -1138,6 +1138,11 @@ react-reconciler@^0.27.0:
     loose-envify "^1.1.0"
     scheduler "^0.21.0"
 
+react-three-map@^0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/react-three-map/-/react-three-map-0.8.2.tgz#acf9da0ba0d06a17c486b1bebd7705462b76d1c1"
+  integrity sha512-y7P0uNOQftIawsSvbquC9DWlWPFYfk1EintCyQk45ihDt6VXCxkX/vlLwZLADDCAScQA5xH1LuR5G2NRtl1ysg==
+
 react@^18:
   version "18.3.1"
   resolved "https://registry.yarnpkg.com/react/-/react-18.3.1.tgz#49ab892009c53933625bd16b2533fc754cab2891"

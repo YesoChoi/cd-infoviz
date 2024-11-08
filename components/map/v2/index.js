@@ -20,31 +20,39 @@ const MapWith3DModel = () => {
     useEffect(() => {
         if (map.current) return;
 
-        // Mapbox 지도 초기화
+        // 지도 초기화 (초기 중심은 기존대로 유지)
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
-            style: 'mapbox://styles/mapbox/light-v11',
             style: MAP_STYLE_URL,
-            pitch: 60,  // 지도 기울기 각도
-            antialias: true,  // 부드러운 렌더링을 위한 안티앨리어싱
-            center: [108.01819614324278, 13.640768620677855],  // 초기 중심 좌표
-            zoom: 4  // 초기 줌 레벨
+            pitch: 60,
+            antialias: true,
+            center: [126.9779692, 37.5662952],
+            zoom: 4
         });
 
-        // 3D 모델의 위치와 회전 설정
-        const modelOrigin = [108.01819614324278, 13.640768620677855];  // 모델이 위치할 좌표
-        const modelAltitude = 0;  // 고도
-        const modelRotate = [Math.PI / 2, 0, 0];  // X, Y, Z축 회전 각도
+        // 서울의 좌표로 모델 위치 변경
+        const modelOrigin = [126.9779692, 37.5662952];  // 서울 중 좌표
+        const modelAltitude = 10;  // 고도를 높여서 더 잘 보이게 설정
+        const modelRotate = [Math.PI / 2, 0, 0];
 
-        // 모델 행렬 업데이트 함수
         const updateModelMatrix = () => {
-            // 위경도 좌표를 Mercator 좌표로 변환
+            if (!map.current) return;
+
             const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(
                 modelOrigin,
                 modelAltitude
             );
+            
+            console.log('Mercator Transform:', {
+                original: { lng: modelOrigin[0], lat: modelOrigin[1], altitude: modelAltitude },
+                mercator: {
+                    x: modelAsMercatorCoordinate.x,
+                    y: modelAsMercatorCoordinate.y,
+                    z: modelAsMercatorCoordinate.z,
+                    meterScale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits()
+                }
+            });
 
-            // 모델 변환 정보 설정
             const modelTransform = {
                 translateX: modelAsMercatorCoordinate.x,
                 translateY: modelAsMercatorCoordinate.y,
@@ -55,9 +63,27 @@ const MapWith3DModel = () => {
                 scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits()
             };
 
-            // Three.js 변환 행렬 생성
+            // 지도의 현재 상태 가져오기
+            const mapTransform = map.current.transform;
+            
+            console.log('Camera Transform:', {
+                pitch: mapTransform.pitch,
+                bearing: mapTransform.bearing,
+                zoom: mapTransform.zoom,
+                center: mapTransform.center
+            });
+
+            console.log('mapTransform:', mapTransform.mercatorMatrix)
+            // 지도의 view matrix 생성
+            const viewMatrix = new THREE.Matrix4().makeScale(1, -1, 1);
+            const cameraTransform = new THREE.Matrix4()
+                .makeRotationX(mapTransform.pitch * (Math.PI / 180))  // pitch를 라디안으로 변환
+                .multiply(new THREE.Matrix4().makeRotationZ(-mapTransform.bearing * (Math.PI / 180)));  // bearing을 라디안으로 변환
+            
+            viewMatrix.multiply(cameraTransform);
+
+            // 모델 변환 행렬 생성
             const matrix = new THREE.Matrix4();
-            // 각 축에 대한 회전 행�� 생성
             const rotationX = new THREE.Matrix4().makeRotationAxis(
                 new THREE.Vector3(1, 0, 0),
                 modelTransform.rotateX
@@ -71,8 +97,12 @@ const MapWith3DModel = () => {
                 modelTransform.rotateZ
             );
 
-            const scaleFactor = 1000000;
-            // 최종 변환 행렬 계산
+            console.log('rotationX:', rotationX)
+            console.log('rotationY:', rotationY)
+            console.log('rotationZ:', rotationZ)
+            // 스케일 팩터를 크게 설정
+            const scaleFactor = 100000;  // 모델 크기를 크게 조정
+
             matrix
                 .makeTranslation(
                     modelTransform.translateX,
@@ -82,23 +112,38 @@ const MapWith3DModel = () => {
                 .scale(
                     new THREE.Vector3(
                         modelTransform.scale * scaleFactor,
-                        -modelTransform.scale * scaleFactor,  // Y축 반전
+                        -modelTransform.scale * scaleFactor,
                         modelTransform.scale * scaleFactor
                     )
                 )
                 .multiply(rotationX)
                 .multiply(rotationY)
                 .multiply(rotationZ);
+            
+            console.log('makeTranslation:', {
+                translateX: modelTransform.translateX,
+                translateY: modelTransform.translateY,
+                translateZ: modelTransform.translateZ
+            })
+            // 지도의 view matrix를 적용
+            matrix.multiply(viewMatrix);
+
+            console.log('Final Model Matrix:', {
+                position: new THREE.Vector3().setFromMatrixPosition(matrix),
+                scale: new THREE.Vector3().setFromMatrixScale(matrix),
+                elements: matrix.elements
+            });
 
             setModelMatrix(matrix);
         };
 
-        // 지도 이벤트에 따른 모델 업데이트
-        map.current.on('style.load', updateModelMatrix);  // 스타일 로드 완료 시
-        map.current.on('move', updateModelMatrix);        // 지도 이동 시
-        map.current.on('zoom', updateModelMatrix);        // 줌 변경 시
-        map.current.on('pitch', updateModelMatrix);       // 기울기 변경 시
-        map.current.on('rotate', updateModelMatrix);      // 회전 시
+        
+        // 이벤트 리스너 설정
+        map.current.on('style.load', updateModelMatrix);
+        map.current.on('move', updateModelMatrix);
+        map.current.on('zoom', updateModelMatrix);
+        map.current.on('pitch', updateModelMatrix);
+        map.current.on('rotate', updateModelMatrix);
 
     }, []);
 

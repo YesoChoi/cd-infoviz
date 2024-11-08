@@ -1,31 +1,31 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react'
 import { Canvas, useLoader, useThree } from '@react-three/fiber'
-import { TextureLoader, DoubleSide, Vector3 } from 'three'
+import { TextureLoader, DoubleSide, Vector3, NearestFilter, LinearMipmapLinearFilter, sRGBEncoding } from 'three'
 import { OrbitControls, Stars } from '@react-three/drei'
 import { MapContainer } from './styles'
 import { CITIES } from '@/utils/constant/test'
+import * as THREE from 'three'
 
 
 const COORDINATES = [{
-  lat: 37,
-  lng: 71
+  lat: 60.9,
+  lng: 51.9
 },{
-  lat: 37,
-  lng: 135,
+  lat: 60.9,
+  lng: -149.3,
 },{
-  lat: 3,
-  lng: 135,
+  lat: -19.60,
+  lng: -149.3,
 },
 {
-  lat: 3,
-  lng: 71
+  lat: -19.60,
+  lng: 51.9
 }]
-
 
 const City = ({ position, size }) => (
   <mesh position={position}>
     <sphereGeometry args={[size, 32, 32]} />
-    <meshStandardMaterial color="blue"
+    <meshStandardMaterial color="#fefce7"
       metalness={0.8}
       roughness={0.2}
     />
@@ -37,6 +37,10 @@ const Map = ({ mapUrl }) => {
   const mesh = useRef()
   const [meshSize, setMeshSize] = useState({ width: 1, height: 1 })
   const texture = useLoader(TextureLoader, mapUrl)
+  texture.magFilter = LinearMipmapLinearFilter;
+  texture.minFilter = LinearMipmapLinearFilter;
+  texture.encoding = sRGBEncoding;
+  texture.anisotropy = 16;
   const { viewport } = useThree()
 
   useEffect(() => {
@@ -68,12 +72,14 @@ const Map = ({ mapUrl }) => {
     // 경도를 x 좌표로 변환
     const x = ((lng - minLng) / (maxLng - minLng) - 0.5) * meshSize.width
 
-    return new Vector3(x, y, 0.001)
+    const xOffset = -.679;
+    const yOffset = -0.025;
+    return new Vector3(x + xOffset, y + yOffset, 0.001)
   }
 
   const calculateCitySize = (totalWorkers) => {
-    const minSize = 0.005
-    const maxSize = 0.05
+    const minSize = 0.0025
+    const maxSize = 0.025
     const maxWorkers = Math.max(...CITIES.map(city => city.totalWorkers))
     return minSize + (totalWorkers / maxWorkers) * (maxSize - minSize)
   }
@@ -94,6 +100,7 @@ const Map = ({ mapUrl }) => {
         <meshBasicMaterial 
           map={texture} 
           side={DoubleSide}
+          toneMapped={false} // 색상 보정 비활성화로 원본 색상 유지
         />
       </mesh>
       {citiesWithPositions.map((city, index) => (
@@ -107,12 +114,23 @@ const Map = ({ mapUrl }) => {
 const MapScene = ({ mapUrl }) => {
   return (
     <MapContainer>
-      <Canvas camera={{ position: [0, 0, 1], fov: 50 }}>
+      <Canvas camera={{ position: [0, 0, 1], fov: 50 }}
+        gl={{ 
+          antialias: true,
+          alpha: true,
+          preserveDrawingBuffer: true,
+          outputEncoding: sRGBEncoding,
+        }}
+      >
         <color attach="background" args={['black']} />
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 10]} intensity={1} />
+        <ambientLight intensity={2} />
+        <directionalLight 
+          position={[10, 10, 10]} 
+          intensity={1.5} 
+          color="white"
+        />
         <Map mapUrl={mapUrl} />
-        <OrbitControls enableZoom={false} enablePan={false} />
+        <OrbitControls enableZoom={true} enablePan={false} />
         <Stars />
       </Canvas>
     </MapContainer>
