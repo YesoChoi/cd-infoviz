@@ -42,11 +42,13 @@ export const WORKER_DATA = {
   },
 };
 
-const calculateTotalWorkers = (country) => {
+export const calculateTotalWorkers = (country, workerType = 'total') => {
+  const targetDataType = workerType + 'Workers'
   let total = 0;
+  console.log(targetDataType)
   Object.values(WORKER_DATA).forEach(category => {
     if (category[country]) {
-      total += category[country].totalWorkers;
+      total += category[country][targetDataType];
     }
   });
   return total;
@@ -55,92 +57,72 @@ const calculateTotalWorkers = (country) => {
 export const CITIES = [
     {
         name: 'Seoul',
+        country: 'South Korea',
         lat: 37.5665,
         lng: 126.9780,
-        totalWorkers: calculateTotalWorkers('South Korea'),
+   
     },
     {
         name: 'Tokyo',
+        country: 'Japan',
         lat: 35.6762,
         lng: 139.6503,
-        totalWorkers: calculateTotalWorkers('Japan'),
+       
     },
     {
         name: 'Beijing',
+        country: 'China',
         lat: 39.9042,
         lng: 116.4074,
-        totalWorkers: calculateTotalWorkers('China'),
+
     },
     {
         name: 'Shanghai',
+        country: 'China',
         lat: 31.2304,
         lng: 121.4737,
-        totalWorkers: calculateTotalWorkers('China'),
-    },
-    {
-        name: 'Hong Kong',
-        lat: 22.3193,
-        lng: 114.1694,
-        totalWorkers: 0, // No data for Hong Kong
-    },
-    {
-        name: 'Singapore',
-        lat: 1.3521,
-        lng: 103.8198,
-        totalWorkers: 0, // No data for Singapore
+ 
     },
     {
         name: 'Bangkok',
+        country: 'Thailand',
         lat: 13.7563,
         lng: 100.5018,
-        totalWorkers: calculateTotalWorkers('Thailand'),
     },
     {
         name: 'Jakarta',
+        country: 'Indonesia',
         lat: -6.2088,
         lng: 106.8456,
-        totalWorkers: calculateTotalWorkers('Indonesia'),
     },
     {
         name: 'Mumbai',
+        country: 'India',
         lat: 19.0760,
         lng: 72.8777,
-        totalWorkers: calculateTotalWorkers('India'),
     },
     {
         name: 'Delhi',
+        country: 'India',
         lat: 28.6139,
         lng: 77.2090,
-        totalWorkers: calculateTotalWorkers('India'),
-    },
-    {
-        name: 'Kuala Lumpur',
-        lat: 3.1390,
-        lng: 101.6869,
-        totalWorkers: 0, // No data for Malaysia
-    },
-    {
-        name: 'Manila',
-        lat: 14.5995,
-        lng: 120.9842,
-        totalWorkers: 0, // No data for Philippines
     },
     {
         name: 'Taipei',
+        country: 'Taiwan',
         lat: 25.0330,
         lng: 121.5654,
-        totalWorkers: calculateTotalWorkers('Taiwan'),
     },
     {
         name: 'Ho Chi Minh City',
-        lat: 10.8231,
+        country: 'Vietnam',
+          lat: 10.8231,
         lng: 106.6297,
-        totalWorkers: calculateTotalWorkers('Vietnam'),
     },
     {
         name: 'Osaka',
+        country: 'Japan',
         lat: 34.6937,
         lng: 135.5023,
-        totalWorkers: calculateTotalWorkers('Japan'),
     }
 ];

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react'
 import { Canvas, useLoader, useThree } from '@react-three/fiber'
 import { TextureLoader, DoubleSide, Vector3, NearestFilter, LinearMipmapLinearFilter, sRGBEncoding } from 'three'
-import { CITIES } from '@/utils/constant/test'
+import { CITIES, calculateTotalWorkers } from '@/utils/constant/test'
 import City from './city'
 
 
@@ -21,7 +21,7 @@ const COORDINATES = [{
 }]
 
 
-const Map = ({ mapUrl }) => {
+const Map = ({ mapUrl, workerType, countries }) => {
   const mesh = useRef()
   const [meshSize, setMeshSize] = useState({ width: 1, height: 1 })
   const texture = useLoader(TextureLoader, mapUrl)
@@ -73,6 +73,15 @@ const Map = ({ mapUrl }) => {
     [meshSize]
   )
 
+
+  const citiesWithPositionsAndWorkers = useMemo(() => 
+    citiesWithPositions.map(city => ({
+      ...city,
+      totalWorkers: calculateTotalWorkers(city.country, workerType)
+    })),
+    [citiesWithPositions, workerType]
+  )
+
   return (
     <group>
       <mesh ref={mesh} position={[0, 0, 0]}>
@@ -83,7 +92,7 @@ const Map = ({ mapUrl }) => {
           toneMapped={false}
         />
       </mesh>
-      {citiesWithPositions.map((city, index) => (
+      {citiesWithPositionsAndWorkers.map((city, index) => (
         <City key={index} 
           totalWorkers={city.totalWorkers}
           position={city.position}

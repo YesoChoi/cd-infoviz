@@ -32,7 +32,7 @@ const MapScene = ({ mapUrl }) => {
           intensity={1.5} 
           color="white"
         />
-        <Map mapUrl={mapUrl} />
+        <Map mapUrl={mapUrl} workerType={workerType} countries={countries} />
         <OrbitControls enableZoom={true} enablePan={false} />
         <Stars />
       </Canvas>
