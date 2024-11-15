@@ -13,9 +13,13 @@ const COUNTRIES = [
   'japan', 'indonesia', 'india', 'china'
 ]
 
-export default function UI() {
-  const [workerType, setWorkerType] = useState(null)
-  const [countries, setCountries] = useState([])
+export default function UI({
+  workerType,
+  setWorkerType,
+  countries,
+  setCountries
+}) {
+ 
 
   const toggleChip = (country) => {
     setCountries(prev =>
