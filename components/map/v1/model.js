@@ -1,9 +1,12 @@
-import React, { useRef, useMemo } from 'react'
-import { useGLTF } from '@react-three/drei'
+import React from 'react'
+// === NIKE MODEL IMPORTS (주석 해제 시 복원) ===
+// import { useGLTF } from '@react-three/drei'
 
 const SCALE = 0.001
 
 export function Model(props) {
+  // === NIKE MODEL CODE START (주석 해제 시 복원) ===
+  /*
   const { nodes, materials } = useGLTF('/3d-model/nike/scene.gltf', true)
 
   const geometry = useMemo(() => nodes.object_0_object_0_object_0__RGB_dffdb16d093e4af68_0.geometry, [nodes])
@@ -21,6 +24,21 @@ export function Model(props) {
       />
     </group>
   )
+  */
+  // === NIKE MODEL CODE END ===
+
+  // === TEMPORARY SPHERE REPLACEMENT ===
+  return (
+    <mesh {...props}>
+      <sphereGeometry args={[0.003, 8, 8]} />
+      <meshStandardMaterial 
+        color="#ff0000"
+        metalness={0.8}
+        roughness={0.2}
+      />
+    </mesh>
+  )
 }
 
-useGLTF.preload('/3d-model/nike/scene.gltf', true)
+// === NIKE MODEL PRELOAD (주석 해제 시 복원) ===
+// useGLTF.preload('/3d-model/nike/scene.gltf', true)
