@@ -14,24 +14,41 @@ const COUNTRIES = [
 ]
 
 export default function UI() {
-  const [selectedButton, setSelectedButton] = useState(null)
+  const [workerType, setWorkerType] = useState(null)
+  const [countries, setCountries] = useState([])
+
+  const toggleChip = (country) => {
+    setCountries(prev =>
+      prev.includes(country)
+        ? prev.filter(c => c !== country)
+        : [...prev, country]
+    )
+  }
+
+  console.log(countries)
 
   return (
     <S.UIContainer>
-      {selectedButton && (
+      {workerType && (
         <S.ChipContainer>
           {COUNTRIES.map(country => (
-            <S.Chip key={country}>{country}</S.Chip>
+            <S.Chip
+              key={country}
+              onClick={() => toggleChip(country)}
+              selected={countries.includes(country)}
+            >
+              {country}
+            </S.Chip>
           ))}
         </S.ChipContainer>
       )}
       {BUTTONS.map(button => (
         <S.Button
           key={button.id}
-          onClick={() => setSelectedButton(button.id)}
-          selected={selectedButton === button.id}
+          onClick={() => setWorkerType(button.id)}
+          selected={workerType === button.id}
         >
-          <S.Dot selected={selectedButton === button.id} />
+          <S.Dot selected={workerType === button.id} />
           {button.label}
         </S.Button>
       ))}
