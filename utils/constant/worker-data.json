@@ -1,0 +1,382 @@
+[
+    {
+        "State":"Banten",
+        "Country / Region":"Indonesia",
+        "Total Workers":84789,
+        "Line Workers":73461,
+        "Female Workers":62804,
+        "Migrant Workers":205,
+        "Latitude":-6.11,
+        "Longitude":106.15
+    },
+    {
+        "State":"Busan Gwangyeogsi",
+        "Country / Region":"South Korea",
+        "Total Workers":1899,
+        "Line Workers":737,
+        "Female Workers":662,
+        "Migrant Workers":20,
+        "Latitude":35.1,
+        "Longitude":129.04
+    },
+    {
+        "State":"Bà Rịa - Vũng Tàu",
+        "Country / Region":"Vietnam",
+        "Total Workers":7060,
+        "Line Workers":5445,
+        "Female Workers":3614,
+        "Migrant Workers":50,
+        "Latitude":10.35,
+        "Longitude":107.08
+    },
+    {
+        "State":"Bình Dương",
+        "Country / Region":"Vietnam",
+        "Total Workers":2516,
+        "Line Workers":2092,
+        "Female Workers":945,
+        "Migrant Workers":153,
+        "Latitude":11.18,
+        "Longitude":106.72
+    },
+    {
+        "State":"Bình Phúc",
+        "Country / Region":"Vietnam",
+        "Total Workers":2085,
+        "Line Workers":1726,
+        "Female Workers":1454,
+        "Migrant Workers":39,
+        "Latitude":11.72,
+        "Longitude":106.93
+    },
+    {
+        "State":"Can Tho",
+        "Country / Region":"Vietnam",
+        "Total Workers":5577,
+        "Line Workers":4922,
+        "Female Workers":3514,
+        "Migrant Workers":0,
+        "Latitude":10.0452,
+        "Longitude":105.7469
+    },
+    {
+        "State":"Changhua",
+        "Country / Region":"Taiwan",
+        "Total Workers":5422,
+        "Line Workers":2815,
+        "Female Workers":2473,
+        "Migrant Workers":431,
+        "Latitude":24.0738,
+        "Longitude":120.5575
+    },
+    {
+        "State":"Chungcheongbugdo",
+        "Country / Region":"South Korea",
+        "Total Workers":45,
+        "Line Workers":19,
+        "Female Workers":4,
+        "Migrant Workers":0,
+        "Latitude":36.8,
+        "Longitude":127.7
+    },
+    {
+        "State":"Da Nang-- thanh ph",
+        "Country / Region":"Vietnam",
+        "Total Workers":559,
+        "Line Workers":456,
+        "Female Workers":375,
+        "Migrant Workers":17,
+        "Latitude":16.0544,
+        "Longitude":108.2022
+    },
+    {
+        "State":"Fujian",
+        "Country / Region":"China",
+        "Total Workers":13299,
+        "Line Workers":11429,
+        "Female Workers":9860,
+        "Migrant Workers":0,
+        "Latitude":26.0789,
+        "Longitude":117.9874
+    },
+    {
+        "State":"Guangdong",
+        "Country / Region":"China",
+        "Total Workers":39228,
+        "Line Workers":31900,
+        "Female Workers":28926,
+        "Migrant Workers":33,
+        "Latitude":23.379,
+        "Longitude":113.7633
+    },
+    {
+        "State":"Guangxi",
+        "Country / Region":"China",
+        "Total Workers":1609,
+        "Line Workers":1365,
+        "Female Workers":895,
+        "Migrant Workers":0,
+        "Latitude":23.8298,
+        "Longitude":108.7881
+    },
+    {
+        "State":"Gyeonggido",
+        "Country / Region":"South Korea",
+        "Total Workers":210,
+        "Line Workers":134,
+        "Female Workers":14,
+        "Migrant Workers":11,
+        "Latitude":37.4138,
+        "Longitude":127.5183
+    },
+    {
+        "State":"Gyeongsangnamdo",
+        "Country / Region":"South Korea",
+        "Total Workers":1055,
+        "Line Workers":376,
+        "Female Workers":575,
+        "Migrant Workers":2,
+        "Latitude":35.2383,
+        "Longitude":128.692
+    },
+    {
+        "State":"Ho Chi Minh",
+        "Country / Region":"Vietnam",
+        "Total Workers":37826,
+        "Line Workers":33007,
+        "Female Workers":32329,
+        "Migrant Workers":62,
+        "Latitude":10.8231,
+        "Longitude":106.6297
+    },
+    {
+        "State":"Hubei",
+        "Country / Region":"China",
+        "Total Workers":1686,
+        "Line Workers":1400,
+        "Female Workers":1619,
+        "Migrant Workers":0,
+        "Latitude":30.9756,
+        "Longitude":112.2707
+    },
+    {
+        "State":"Hunan",
+        "Country / Region":"China",
+        "Total Workers":14008,
+        "Line Workers":12511,
+        "Female Workers":11791,
+        "Migrant Workers":0,
+        "Latitude":27.6104,
+        "Longitude":111.7081
+    },
+    {
+        "State":"Jawa Barat",
+        "Country / Region":"Indonesia",
+        "Total Workers":131428,
+        "Line Workers":116290,
+        "Female Workers":101131,
+        "Migrant Workers":70,
+        "Latitude":-6.8895,
+        "Longitude":107.6404
+    },
+    {
+        "State":"Jawa Tengah",
+        "Country / Region":"Indonesia",
+        "Total Workers":24653,
+        "Line Workers":21520,
+        "Female Workers":20815,
+        "Migrant Workers":0,
+        "Latitude":-7.5666,
+        "Longitude":110.8312
+    },
+    {
+        "State":"Jiangxi",
+        "Country / Region":"China",
+        "Total Workers":13270,
+        "Line Workers":10823,
+        "Female Workers":11911,
+        "Migrant Workers":0,
+        "Latitude":27.0875,
+        "Longitude":114.9042
+    },
+    {
+        "State":"Kaohsiung",
+        "Country / Region":"Taiwan",
+        "Total Workers":687,
+        "Line Workers":396,
+        "Female Workers":82,
+        "Migrant Workers":96,
+        "Latitude":22.6273,
+        "Longitude":120.3014
+    },
+    {
+        "State":"Kyoto",
+        "Country / Region":"Japan",
+        "Total Workers":5,
+        "Line Workers":4,
+        "Female Workers":2,
+        "Migrant Workers":0,
+        "Latitude":35.0116,
+        "Longitude":135.7681
+    },
+    {
+        "State":"Long An",
+        "Country / Region":"Vietnam",
+        "Total Workers":33554,
+        "Line Workers":29947,
+        "Female Workers":24995,
+        "Migrant Workers":0,
+        "Latitude":10.6083,
+        "Longitude":106.6777
+    },
+    {
+        "State":"Nam Định",
+        "Country / Region":"Vietnam",
+        "Total Workers":9935,
+        "Line Workers":8559,
+        "Female Workers":8047,
+        "Migrant Workers":0,
+        "Latitude":20.4175,
+        "Longitude":106.1747
+    },
+    {
+        "State":"Okayama",
+        "Country / Region":"Japan",
+        "Total Workers":1700,
+        "Line Workers":1400,
+        "Female Workers":680,
+        "Migrant Workers":0,
+        "Latitude":34.6551,
+        "Longitude":133.9195
+    },
+    {
+        "State":"Phra Nakhon Si Ayu",
+        "Country / Region":"Thailand",
+        "Total Workers":574,
+        "Line Workers":401,
+        "Female Workers":98,
+        "Migrant Workers":0,
+        "Latitude":14.3517,
+        "Longitude":100.5773
+    },
+    {
+        "State":"Prachin Buri",
+        "Country / Region":"Thailand",
+        "Total Workers":558,
+        "Line Workers":411,
+        "Female Workers":201,
+        "Migrant Workers":0,
+        "Latitude":14.0482,
+        "Longitude":101.3646
+    },
+    {
+        "State":"Shandong",
+        "Country / Region":"China",
+        "Total Workers":4616,
+        "Line Workers":4091,
+        "Female Workers":3959,
+        "Migrant Workers":0,
+        "Latitude":36.3427,
+        "Longitude":118.1497
+    },
+    {
+        "State":"Simane",
+        "Country / Region":"Japan",
+        "Total Workers":183,
+        "Line Workers":160,
+        "Female Workers":55,
+        "Migrant Workers":0,
+        "Latitude":35.4723,
+        "Longitude":132.3932
+    },
+    {
+        "State":"Taichung",
+        "Country / Region":"Taiwan",
+        "Total Workers":155,
+        "Line Workers":61,
+        "Female Workers":31,
+        "Migrant Workers":63,
+        "Latitude":24.1477,
+        "Longitude":120.6736
+    },
+    {
+        "State":"Tamil Nadu",
+        "Country / Region":"India",
+        "Total Workers":29773,
+        "Line Workers":28083,
+        "Female Workers":18945,
+        "Migrant Workers":0,
+        "Latitude":11.1271,
+        "Longitude":78.6569
+    },
+    {
+        "State":"Thanh Hóa",
+        "Country / Region":"Vietnam",
+        "Total Workers":41434,
+        "Line Workers":38321,
+        "Female Workers":35197,
+        "Migrant Workers":10,
+        "Latitude":19.8071,
+        "Longitude":105.7769
+    },
+    {
+        "State":"Tin Giang",
+        "Country / Region":"Vietnam",
+        "Total Workers":6131,
+        "Line Workers":5474,
+        "Female Workers":5886,
+        "Migrant Workers":0,
+        "Latitude":10.4493,
+        "Longitude":106.342
+    },
+    {
+        "State":"Tây Ninh",
+        "Country / Region":"Vietnam",
+        "Total Workers":21366,
+        "Line Workers":18827,
+        "Female Workers":15310,
+        "Migrant Workers":33,
+        "Latitude":11.3445,
+        "Longitude":106.077
+    },
+    {
+        "State":"Vinh Long",
+        "Country / Region":"Vietnam",
+        "Total Workers":2268,
+        "Line Workers":1834,
+        "Female Workers":1207,
+        "Migrant Workers":0,
+        "Latitude":10.256,
+        "Longitude":105.964
+    },
+    {
+        "State":"Yunlin",
+        "Country / Region":"Taiwan",
+        "Total Workers":2247,
+        "Line Workers":497,
+        "Female Workers":1120,
+        "Migrant Workers":130,
+        "Latitude":23.7095,
+        "Longitude":120.4313
+    },
+    {
+        "State":"Zhejiang",
+        "Country / Region":"China",
+        "Total Workers":624,
+        "Line Workers":370,
+        "Female Workers":321,
+        "Migrant Workers":0,
+        "Latitude":29.1416,
+        "Longitude":119.7889
+    },
+    {
+        "State":"Ðng Nai",
+        "Country / Region":"Vietnam",
+        "Total Workers":157602,
+        "Line Workers":138647,
+        "Female Workers":121031,
+        "Migrant Workers":59,
+        "Latitude":10.9488,
+        "Longitude":106.8235
+    }
+]

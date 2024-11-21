@@ -32,7 +32,7 @@ export function Model(props) {
     <mesh {...props}>
       <sphereGeometry args={[0.003, 8, 8]} />
       <meshStandardMaterial 
-        color="#ff0000"
+        color="#ffffff"
         metalness={0.8}
         roughness={0.2}
       />

@@ -3,7 +3,9 @@ import { Vector3 } from 'three'
 import { Instance, Instances } from '@react-three/drei'
 import { Model } from './model'
 
-const City = ({ position, totalWorkers }) => {
+const City = ({ position, totalWorkers, country, activeCountries = [], workerType }) => {
+  if (!workerType) return null;
+
   const workerDots = useMemo(() => {
     const dots = []
     const radius = 0.008
@@ -32,14 +34,18 @@ const City = ({ position, totalWorkers }) => {
     return dots
   }, [position, totalWorkers])
 
+  const isActive = activeCountries.length === 0 || activeCountries.includes(country.toLowerCase())
+
   return (
     <>
       <Instances range={workerDots.length} limit={1000}>
         <sphereGeometry args={[0.003, 16, 16]} />
         <meshStandardMaterial 
-          color="#fefce7"
-          metalness={0.8}
-          roughness={0.2}
+          color={isActive ? "#fefce7" : "#4a4a4a"}
+          metalness={isActive ? 0.8 : 0.3}
+          roughness={isActive ? 0.2 : 0.7}
+          opacity={isActive ? 1 : 0.7}
+          transparent={true}
         />
         {workerDots.map((pos, index) => (
           <Instance key={index} position={pos} />

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react'
 import { Canvas, useLoader, useThree } from '@react-three/fiber'
 import { TextureLoader, DoubleSide, Vector3, NearestFilter, LinearMipmapLinearFilter, sRGBEncoding } from 'three'
-import { CITIES, calculateTotalWorkers } from '@/utils/constant/test'
+import workerData from '@/utils/constant/worker-data.json'
 import City from './city'
 
 
@@ -21,7 +21,7 @@ const COORDINATES = [{
 }]
 
 
-const Map = ({ mapUrl, workerType, countries }) => {
+const Map = ({ mapUrl, workerType, activeCountries }) => {
   const mesh = useRef()
   const [meshSize, setMeshSize] = useState({ width: 1, height: 1 })
   const texture = useLoader(TextureLoader, mapUrl)
@@ -55,30 +55,52 @@ const Map = ({ mapUrl, workerType, countries }) => {
     const minLng = Math.min(...COORDINATES.map(c => c.lng))
     const maxLng = Math.max(...COORDINATES.map(c => c.lng))
 
-    // 위도를 y 좌표로 변환 (위도가 높을수록 y 값이 커짐)
+    // 위도를 y 좌표로 변환 
     const y = ((lat - minLat) / (maxLat - minLat) - 0.5) * meshSize.height
     // 경도를 x 좌표로 변환
     const x = ((lng - minLng) / (maxLng - minLng) - 0.5) * meshSize.width
 
     // const xOffset = -.679;
-    // const yOffset = -0.025;
-    return new Vector3(x, y, 0.001)
+    const yOffset = -0.033;
+    return new Vector3(x, y+yOffset, 0.001)
   }
 
   const citiesWithPositions = useMemo(() => 
-    CITIES.map(city => ({
-      ...city,
-      position: latLngToPosition(city.lat, city.lng)
+    workerData.map(city => ({
+      name: city.State,
+      country: city["Country / Region"],
+      position: latLngToPosition(city.Latitude, city.Longitude)
     })),
     [meshSize]
   )
 
-
   const citiesWithPositionsAndWorkers = useMemo(() => 
-    citiesWithPositions.map(city => ({
-      ...city,
-      totalWorkers: calculateTotalWorkers(city.country, workerType)
-    })),
+    citiesWithPositions.map(city => {
+      // worker-data.json에서 해당 도시 찾기
+      const cityData = workerData.find(data => data.State === city.name);
+      
+      // workerType에 따라 다른 worker 수 반환
+      let workers;
+      switch(workerType) {
+        case 'line':
+          workers = cityData["Line Workers"];
+          break;
+        case 'female':
+          workers = cityData["Female Workers"];
+          break;
+        case 'migrant':
+          workers = cityData["Migrant Workers"];
+          break;
+        case 'total':
+        default:
+          workers = cityData["Total Workers"];
+      }
+
+      return {
+        ...city,
+        totalWorkers: workers
+      };
+    }),
     [citiesWithPositions, workerType]
   )
 
@@ -93,9 +115,13 @@ const Map = ({ mapUrl, workerType, countries }) => {
         />
       </mesh>
       {citiesWithPositionsAndWorkers.map((city, index) => (
-        <City key={index} 
+        <City 
+          key={index} 
           totalWorkers={city.totalWorkers}
           position={city.position}
+          country={city.country}
+          activeCountries={activeCountries}
+          workerType={workerType}
         />
       ))}
     </group>

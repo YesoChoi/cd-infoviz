@@ -7,8 +7,6 @@ import Map from './map'
 import UI from '@/components/ui'
 
 
-
-
 const MapScene = ({ mapUrl }) => {
 
   const [workerType, setWorkerType] = useState(null)
