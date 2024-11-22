@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react'
 import { Vector3 } from 'three'
 import { Instance, Instances } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { Model } from './model'
+import { NikeModel } from './model'
 
 const City = ({ position, totalWorkers, country, countries = [], workerType }) => {
   if (!workerType) return null;
@@ -63,7 +63,8 @@ const City = ({ position, totalWorkers, country, countries = [], workerType }) =
 
   return (
     <>
-      <Instances range={workerDots.length} limit={1000}>
+      <NikeModel />
+      {/* <Instances range={workerDots.length} limit={1000}>
         <sphereGeometry args={[0.003, 16, 16]} />
         <meshStandardMaterial 
           color={isActive ? "#3B89DB" : "#BCBCBC"}
@@ -81,7 +82,7 @@ const City = ({ position, totalWorkers, country, countries = [], workerType }) =
             }}
           />
         ))}
-      </Instances>
+      </Instances> */}
     </>
   )
 }

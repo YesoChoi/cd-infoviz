@@ -1,44 +1,86 @@
 import React from 'react'
 // === NIKE MODEL IMPORTS (주석 해제 시 복원) ===
-// import { useGLTF } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei'
 
-const SCALE = 0.001
+const SCALE = 0.01
+const PATH = '/3d-model/nike02/scene.gltf'
 
-export function Model(props) {
-  // === NIKE MODEL CODE START (주석 해제 시 복원) ===
-  /*
-  const { nodes, materials } = useGLTF('/3d-model/nike/scene.gltf', true)
 
-  const geometry = useMemo(() => nodes.object_0_object_0_object_0__RGB_dffdb16d093e4af68_0.geometry, [nodes])
-  const material = useMemo(() => materials.object_0__RGB_dffdb16d093e4af68, [materials])
-
+export function NikeModel(props) {
+  const { nodes, materials } = useGLTF(PATH)
   return (
-    <group {...props} dispose={null}>
-      <mesh
-        castShadow={false}
-        receiveShadow={false}
-        geometry={geometry}
-        material={material}
-        rotation={[-Math.PI / 2, 0, 0]}
-        scale={[SCALE, SCALE, SCALE]}
-      />
+    <group {...props} dispose={null}
+      scale={[SCALE, SCALE, SCALE]}
+    >
+      <group rotation={[-Math.PI / 2, 0, 0]} scale={0.494}>
+        <group rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
+          <group position={[-115.396, 107.813, -79.139]}>
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Render001_Material_0.geometry}
+              material={materials.Material}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Render001_Material006_0.geometry}
+              material={materials['Material.006']}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Render001_Material002_0.geometry}
+              material={materials['Material.002']}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Render001_Material002_0_1.geometry}
+              material={materials['Material.002']}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Render001_Material002_0_2.geometry}
+              material={materials['Material.002']}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Render001_SVGMat_0.geometry}
+              material={materials.SVGMat}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Render001_Material005_0.geometry}
+              material={materials['Material.005']}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Render001_SVGMat002_0.geometry}
+              material={materials['SVGMat.002']}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Render001_Material001_0.geometry}
+              material={materials['Material.001']}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Render001_Material003_0.geometry}
+              material={materials['Material.003']}
+            />
+          </group>
+        </group>
+      </group>
     </group>
-  )
-  */
-  // === NIKE MODEL CODE END ===
-
-  // === TEMPORARY SPHERE REPLACEMENT ===
-  return (
-    <mesh {...props}>
-      <sphereGeometry args={[0.003, 8, 8]} />
-      <meshStandardMaterial 
-        color="#ffffff"
-        metalness={0.8}
-        roughness={0.2}
-      />
-    </mesh>
   )
 }
 
-// === NIKE MODEL PRELOAD (주석 해제 시 복원) ===
-// useGLTF.preload('/3d-model/nike/scene.gltf', true)
+useGLTF.preload(PATH)
+
