@@ -19,8 +19,6 @@ export default function UI({
   countries,
   setCountries
 }) {
- 
-
   const toggleChip = (country) => {
     setCountries(prev =>
       prev.includes(country)
@@ -49,7 +47,10 @@ export default function UI({
       {BUTTONS.map(button => (
         <S.Button
           key={button.id}
-          onClick={() => setWorkerType(button.id)}
+          onClick={() => {
+            setWorkerType(button.id)
+            setCountries([])  // workerType 변경 시 countries 리셋
+          }}
           selected={workerType === button.id}
         >
           <S.Dot selected={workerType === button.id} />

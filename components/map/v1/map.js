@@ -21,7 +21,7 @@ const COORDINATES = [{
 }]
 
 
-const Map = ({ mapUrl, workerType, activeCountries }) => {
+const Map = ({ mapUrl, workerType, countries }) => {
   const mesh = useRef()
   const [meshSize, setMeshSize] = useState({ width: 1, height: 1 })
   const texture = useLoader(TextureLoader, mapUrl)
@@ -120,7 +120,7 @@ const Map = ({ mapUrl, workerType, activeCountries }) => {
           totalWorkers={city.totalWorkers}
           position={city.position}
           country={city.country}
-          activeCountries={activeCountries}
+          countries={countries}
           workerType={workerType}
         />
       ))}

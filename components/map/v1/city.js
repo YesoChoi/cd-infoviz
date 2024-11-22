@@ -1,10 +1,35 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { Vector3 } from 'three'
 import { Instance, Instances } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 import { Model } from './model'
 
-const City = ({ position, totalWorkers, country, activeCountries = [], workerType }) => {
+const City = ({ position, totalWorkers, country, countries = [], workerType }) => {
   if (!workerType) return null;
+
+  const time = useRef(0)
+  const instances = useRef([])
+
+  // model 크기 변화 애니메이션
+  useFrame((state, delta) => {
+    if (countries.length > 0 && countries.includes(country.toLowerCase())) {
+      time.current += delta
+      const scale = 1 + Math.sin(time.current * 3) * 0.3
+      
+      instances.current.forEach(instance => {
+        if (instance) {
+          instance.scale.set(scale, scale, scale)
+        }
+      })
+    } else {
+      instances.current.forEach(instance => {
+        if (instance) {
+          instance.scale.set(1, 1, 1)
+        }
+      })
+      time.current = 0
+    }
+  })
 
   const workerDots = useMemo(() => {
     const dots = []
@@ -34,27 +59,29 @@ const City = ({ position, totalWorkers, country, activeCountries = [], workerTyp
     return dots
   }, [position, totalWorkers])
 
-  const isActive = activeCountries.length === 0 || activeCountries.includes(country.toLowerCase())
+  const isActive = countries.length === 0 || countries.includes(country.toLowerCase())
 
   return (
     <>
       <Instances range={workerDots.length} limit={1000}>
         <sphereGeometry args={[0.003, 16, 16]} />
         <meshStandardMaterial 
-          color={isActive ? "#fefce7" : "#4a4a4a"}
+          color={isActive ? "#3B89DB" : "#BCBCBC"}
           metalness={isActive ? 0.8 : 0.3}
           roughness={isActive ? 0.2 : 0.7}
-          opacity={isActive ? 1 : 0.7}
+          // opacity={isActive ? 1 : 0.7}
           transparent={true}
         />
         {workerDots.map((pos, index) => (
-          <Instance key={index} position={pos} />
+          <Instance 
+            key={index} 
+            position={pos}
+            ref={ref => {
+              if (ref) instances.current[index] = ref
+            }}
+          />
         ))}
       </Instances>
-      
-      {workerDots.map((pos, index) => (
-        <Model key={index} position={pos} />
-      ))}
     </>
   )
 }
