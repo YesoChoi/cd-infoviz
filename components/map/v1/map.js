@@ -122,6 +122,7 @@ const Map = ({ mapUrl, workerType, countries }) => {
           country={city.country}
           countries={countries}
           workerType={workerType}
+          viewport={viewport}
         />
       ))}
     </group>

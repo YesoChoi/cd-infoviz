@@ -1,89 +1,86 @@
 import React, { useMemo, useRef } from 'react'
 import { Vector3 } from 'three'
-import { Instance, Instances } from '@react-three/drei'
+import { Instance } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { NikeModel } from './model'
 
-const City = ({ position, totalWorkers, country, countries = [], workerType }) => {
+const City = ({ position, totalWorkers, country, countries = [], workerType, viewport }) => {
   if (!workerType) return null;
 
   const time = useRef(0)
-  const instances = useRef([])
+  const modelRefs = useRef([])
 
-  // model 크기 변화 애니메이션
+  // viewport 크기에 따른 기본 scale 계산
+  const baseScale = useMemo(() => {
+    const baseSize = 0.0003
+    const viewportFactor = Math.min(viewport.width, viewport.height)
+    return baseSize * viewportFactor
+  }, [viewport])
+
+  // 크기 변화 애니메이션
   useFrame((state, delta) => {
     if (countries.length > 0 && countries.includes(country.toLowerCase())) {
       time.current += delta
       const scale = 1 + Math.sin(time.current * 3) * 0.3
-      
-      instances.current.forEach(instance => {
-        if (instance) {
-          instance.scale.set(scale, scale, scale)
+      modelRefs.current.forEach(ref => {
+        if (ref) {
+          ref.scale.set(
+            scale * baseScale, 
+            scale * baseScale, 
+            scale * baseScale
+          )
         }
       })
     } else {
-      instances.current.forEach(instance => {
-        if (instance) {
-          instance.scale.set(1, 1, 1)
+      modelRefs.current.forEach(ref => {
+        if (ref) {
+          ref.scale.set(baseScale, baseScale, baseScale)
         }
       })
       time.current = 0
     }
   })
 
-  const workerDots = useMemo(() => {
-    const dots = []
-    const radius = 0.008
-    const workerCount = Math.ceil(totalWorkers / 500)
-    const dotsPerLayer = 4
-    const layerHeight = 0.004
-
-    const totalLayers = Math.ceil(workerCount / dotsPerLayer)
-    const middleLayer = Math.floor(totalLayers / 2)
-
-    for (let i = 0; i < workerCount; i++) {
-      const layer = Math.floor(i / dotsPerLayer)
-      const indexInLayer = i % dotsPerLayer
-
-      const angleStep = (2 * Math.PI) / dotsPerLayer
-      const angle = indexInLayer * angleStep + (layer * Math.PI / dotsPerLayer)
-      
-      const x = position.x + radius * Math.cos(angle)
-      const y = position.y + radius * Math.sin(angle)
-      
-      const zOffset = (layer - middleLayer) * layerHeight
-      const z = 0.001 + zOffset
-      
-      dots.push(new Vector3(x, y, z))
-    }
-    return dots
-  }, [position, totalWorkers])
-
-  const isActive = countries.length === 0 || countries.includes(country.toLowerCase())
+  const modelCount = useMemo(() => {
+    // 모든 worker type에 대해 5000명당 1개, 최소 1개 보장
+    return Math.max(1, Math.ceil(totalWorkers / 5000))
+  }, [totalWorkers])
 
   return (
-    <>
-      <NikeModel />
-      {/* <Instances range={workerDots.length} limit={1000}>
-        <sphereGeometry args={[0.003, 16, 16]} />
-        <meshStandardMaterial 
-          color={isActive ? "#3B89DB" : "#BCBCBC"}
-          metalness={isActive ? 0.8 : 0.3}
-          roughness={isActive ? 0.2 : 0.7}
-          // opacity={isActive ? 1 : 0.7}
-          transparent={true}
-        />
-        {workerDots.map((pos, index) => (
-          <Instance 
-            key={index} 
-            position={pos}
+    <group>
+      {[...Array(modelCount)].map((_, index) => {
+        const radius = 0.008  // 원형 배치의 반지름
+        const modelsPerLayer = 1// 한 층당 모델 개수
+        const layerHeight = 0.005
+
+        const layer = Math.floor(index / modelsPerLayer) // 현재 층 번호
+        const indexInLayer = index % modelsPerLayer 
+
+        const angleStep = (2 * Math.PI) / modelsPerLayer
+        const angle = indexInLayer * angleStep + (layer * Math.PI / modelsPerLayer)
+        
+        const x = position.x + radius * Math.cos(angle)
+        const y = position.y + radius * Math.sin(angle)
+        
+        const totalLayers = Math.ceil(modelCount / modelsPerLayer)
+        // const middleLayer = Math.floor(totalLayers / 2)
+        // const zOffset = (layer - middleLayer) * layerHeight
+        const zOffset = layer * layerHeight // 층별 z축 높이
+        const z = 0.001 + zOffset // 최종 z축 위치
+        
+        return (
+          <NikeModel
+            key={index}
+            position={[x, y, z]}
+            rotation={[Math.PI / 2, -Math.PI / 4, 0]}
+            scale={baseScale}
             ref={ref => {
-              if (ref) instances.current[index] = ref
+              if (ref) modelRefs.current[index] = ref
             }}
           />
-        ))}
-      </Instances> */}
-    </>
+        )
+      })}
+    </group>
   )
 }
 
