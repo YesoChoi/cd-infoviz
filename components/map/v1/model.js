@@ -1,14 +1,12 @@
-import React from 'react'
-// === NIKE MODEL IMPORTS (주석 해제 시 복원) ===
+import React, { forwardRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
-const SCALE = 0.004
 const PATH = '/3d-model/nike03/nikeModel.glb'
 
-export function NikeModel(props) {
+const NikeModel = forwardRef((props, ref) => {
   const { nodes, materials } = useGLTF(PATH)
   return (
-    <group {...props} dispose={null} scale={[SCALE, SCALE, SCALE]}>
+    <group ref={ref} {...props} dispose={null}>
       <group position={[-0.007, 0.999, -0.791]} rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
         <mesh
           castShadow
@@ -55,6 +53,8 @@ export function NikeModel(props) {
       </group>
     </group>
   )
-}
+})
+
+export default NikeModel
 
 useGLTF.preload(PATH)

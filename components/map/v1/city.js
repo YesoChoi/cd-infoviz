@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react'
 import { Vector3 } from 'three'
 import { Instance } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { NikeModel } from './model'
+import NikeModel from './model'
 
 const City = ({ position, totalWorkers, country, countries = [], workerType, viewport }) => {
   if (!workerType) return null;
@@ -12,7 +12,7 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
 
   // viewport 크기에 따른 기본 scale 계산
   const baseScale = useMemo(() => {
-    const baseSize = 0.0003
+    const baseSize = 0.008
     const viewportFactor = Math.min(viewport.width, viewport.height)
     return baseSize * viewportFactor
   }, [viewport])
@@ -21,7 +21,7 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
   useFrame((state, delta) => {
     if (countries.length > 0 && countries.includes(country.toLowerCase())) {
       time.current += delta
-      const scale = 1 + Math.sin(time.current * 3) * 0.3
+      const scale = 1 + Math.sin(time.current * 3) * 0.125
       modelRefs.current.forEach(ref => {
         if (ref) {
           ref.scale.set(
