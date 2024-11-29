@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react'
 import { Canvas, useLoader, useThree } from '@react-three/fiber'
-import { TextureLoader, DoubleSide, Vector3, NearestFilter, LinearMipmapLinearFilter, sRGBEncoding } from 'three'
+import { TextureLoader, DoubleSide, Vector3, NearestFilter, LinearMipmapLinearFilter, SRGBColorSpace } from 'three'
 import workerData from '@/utils/constant/worker-data.json'
 import City from './city'
 
@@ -27,7 +27,7 @@ const Map = ({ mapUrl, workerType, countries }) => {
   const texture = useLoader(TextureLoader, mapUrl)
   texture.magFilter = LinearMipmapLinearFilter;
   texture.minFilter = LinearMipmapLinearFilter;
-  texture.encoding = sRGBEncoding;
+  texture.colorSpace = SRGBColorSpace;
   texture.anisotropy = 16;
   const { viewport } = useThree()
 

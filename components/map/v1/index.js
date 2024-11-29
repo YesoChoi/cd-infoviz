@@ -1,6 +1,6 @@
 import React,  {useState } from 'react'
 import { Canvas } from '@react-three/fiber'
-import {  sRGBEncoding } from 'three'
+import { SRGBColorSpace } from 'three'
 import { OrbitControls, Stars } from '@react-three/drei'
 import { MapContainer } from './styles'
 import Map from './map'
@@ -20,7 +20,7 @@ const MapScene = ({ mapUrl }) => {
           antialias: true,
           alpha: true,
           preserveDrawingBuffer: true,
-          outputEncoding: sRGBEncoding,
+          outputColorSpace: SRGBColorSpace,
         }}
       >
         <color attach="background" args={['black']} />
