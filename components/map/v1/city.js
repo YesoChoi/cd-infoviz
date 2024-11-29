@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo, useRef, useState, useEffect } from 'react'
 import { Vector3 } from 'three'
 import { Instance } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
@@ -9,6 +9,28 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
 
   const time = useRef(0)
   const modelRefs = useRef([])
+  const [visibleLayers, setVisibleLayers] = useState(0)
+  
+  // 모델 개수와 레이어 계산
+  const { modelCount, totalLayers } = useMemo(() => {
+    const count = Math.max(1, Math.ceil(totalWorkers / 5000))
+    const layers = Math.ceil(count / 1) // modelsPerLayer가 1이므로
+    return { modelCount: count, totalLayers: layers }
+  }, [totalWorkers])
+
+  // workerType이 변경될 때마다 애니메이션 재시작
+  useEffect(() => {
+    setVisibleLayers(0)
+    const interval = setInterval(() => {
+      setVisibleLayers(prev => {
+        if (prev < totalLayers) return prev + 1
+        clearInterval(interval)
+        return prev
+      })
+    }, 60) // 각 레이어가 나타나는 간격 (밀리초)
+
+    return () => clearInterval(interval)
+  }, [workerType, totalLayers])
 
   // viewport 크기에 따른 기본 scale 계산
   const baseScale = useMemo(() => {
@@ -41,32 +63,25 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
     }
   })
 
-  const modelCount = useMemo(() => {
-    // 모든 worker type에 대해 5000명당 1개, 최소 1개 보장
-    return Math.max(1, Math.ceil(totalWorkers / 5000))
-  }, [totalWorkers])
-
   return (
     <group>
       {[...Array(modelCount)].map((_, index) => {
-        const radius = 0.008  // 원형 배치의 반지름
-        const modelsPerLayer = 1// 한 층당 모델 개수
+        const radius = 0.008
+        const modelsPerLayer = 1
         const layerHeight = 0.005
 
-        const layer = Math.floor(index / modelsPerLayer) // 현재 층 번호
+        const layer = Math.floor(index / modelsPerLayer)
         const indexInLayer = index % modelsPerLayer 
+
+        // 현재 레이어가 visibleLayers보다 크면 렌더링하지 않음
+        if (layer >= visibleLayers) return null;
 
         const angleStep = (2 * Math.PI) / modelsPerLayer
         const angle = indexInLayer * angleStep + (layer * Math.PI / modelsPerLayer)
         
         const x = position.x + radius * Math.cos(angle)
         const y = position.y + radius * Math.sin(angle)
-        
-        const totalLayers = Math.ceil(modelCount / modelsPerLayer)
-        // const middleLayer = Math.floor(totalLayers / 2)
-        // const zOffset = (layer - middleLayer) * layerHeight
-        const zOffset = layer * layerHeight // 층별 z축 높이
-        const z = 0.001 + zOffset // 최종 z축 위치
+        const z = 0.001 + (layer * layerHeight)
         
         return (
           <NikeModel
