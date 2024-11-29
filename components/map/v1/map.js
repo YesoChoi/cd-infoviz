@@ -105,7 +105,7 @@ const Map = ({ mapUrl, workerType, countries }) => {
   )
 
   return (
-    <group>
+    <group rotation={[- Math.PI * 0.25, 0, 0]}>
       <mesh ref={mesh} position={[0, 0, 0]}>
         <planeGeometry args={[1, 1]} />
         <meshBasicMaterial 

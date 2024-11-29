@@ -31,7 +31,19 @@ const MapScene = ({ mapUrl }) => {
           color="white"
         />
         <Map mapUrl={mapUrl} workerType={workerType} countries={countries} />
-        <OrbitControls enableZoom={true} enablePan={false} />
+        <OrbitControls 
+          enableZoom={true} 
+          enablePan={true} 
+          enableRotate={false}
+          minDistance={0.6}
+          maxDistance={1.2}
+          zoomSpeed={0.5}
+          mouseButtons={{
+            LEFT: 2,    // 왼쪽 마우스 버튼을 PAN으로 설정 (2는 PAN을 의미)
+            MIDDLE: 1,  // 중간 버튼
+            RIGHT: 0    // 오른쪽 버튼
+          }}
+        />
         <Stars />
       </Canvas>
       <UI 
