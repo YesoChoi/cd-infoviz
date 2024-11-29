@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState, useEffect } from 'react'
 import { Vector3 } from 'three'
-import { Instance } from '@react-three/drei'
+import { Instance, SpotLight } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import NikeModel from './model'
 
@@ -10,11 +10,15 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
   const time = useRef(0)
   const modelRefs = useRef([])
   const [visibleLayers, setVisibleLayers] = useState(0)
+  const spotLightRef = useRef()
+  
+  // 선택된 country인지 확인
+  const isSelected = countries.length > 0 && countries.includes(country.toLowerCase())
   
   // 모델 개수와 레이어 계산
   const { modelCount, totalLayers } = useMemo(() => {
     const count = Math.max(1, Math.ceil(totalWorkers / 5000))
-    const layers = Math.ceil(count / 1) // modelsPerLayer가 1이므로
+    const layers = Math.ceil(count / 1)
     return { modelCount: count, totalLayers: layers }
   }, [totalWorkers])
 
@@ -41,7 +45,7 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
 
   // 크기 변화 애니메이션
   useFrame((state, delta) => {
-    if (countries.length > 0 && countries.includes(country.toLowerCase())) {
+    if (isSelected) {
       time.current += delta
       const scale = 1 + Math.sin(time.current * 3) * 0.125
       modelRefs.current.forEach(ref => {
@@ -65,6 +69,23 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
 
   return (
     <group>
+      {/* 선택된 country에만 스포트라이트 추가 */}
+      {isSelected && (
+        <SpotLight
+          ref={spotLightRef}
+          position={[position.x, position.y, position.z + 0.1]}
+          intensity={10}
+          angle={0.1}
+          penumbra={0.1}
+          distance={0.3}
+          color="#ffffff"
+          castShadow
+          decay={2}
+          power={20}
+          target-position={[position.x, position.y, 0]}
+        />
+      )}
+
       {[...Array(modelCount)].map((_, index) => {
         const radius = 0.008
         const modelsPerLayer = 1
@@ -75,7 +96,7 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
 
         // 현재 레이어가 visibleLayers보다 크면 렌더링하지 않음
         if (layer >= visibleLayers) return null;
-
+        
         const angleStep = (2 * Math.PI) / modelsPerLayer
         const angle = indexInLayer * angleStep + (layer * Math.PI / modelsPerLayer)
         
@@ -92,6 +113,7 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
             ref={ref => {
               if (ref) modelRefs.current[index] = ref
             }}
+            isSelected={isSelected}
           />
         )
       })}

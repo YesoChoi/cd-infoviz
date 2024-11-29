@@ -16,6 +16,7 @@ const MapScene = ({ mapUrl }) => {
   return (
     <MapContainer>
       <Canvas camera={{ position: [0, 0, 1], fov: 50 }}
+        shadows // 그림자 활성화
         gl={{ 
           antialias: true,
           alpha: true,
@@ -24,25 +25,30 @@ const MapScene = ({ mapUrl }) => {
         }}
       >
         <color attach="background" args={['black']} />
-        <ambientLight intensity={2} />
+        <ambientLight intensity={0.5} />
         <directionalLight 
           position={[10, 10, 10]} 
-          intensity={1.5} 
+          intensity={0.3} 
           color="white"
         />
         <Map mapUrl={mapUrl} workerType={workerType} countries={countries} />
         <OrbitControls 
           enableZoom={true} 
           enablePan={true} 
-          enableRotate={false}
+          enableRotate={true}
           minDistance={0.6}
-          maxDistance={1.2}
+          maxDistance={1.0}
           zoomSpeed={0.5}
+          minPolarAngle={Math.PI * 0.3}
+          maxPolarAngle={Math.PI * 0.5}
+          minAzimuthAngle={-Math.PI * 0.1}
+          maxAzimuthAngle={Math.PI * 0.1}
           mouseButtons={{
-            LEFT: 2,    // 왼쪽 마우스 버튼을 PAN으로 설정 (2는 PAN을 의미)
-            MIDDLE: 1,  // 중간 버튼
-            RIGHT: 0    // 오른쪽 버튼
+            LEFT: 2,    // 왼쪽 마우스 버튼: PAN
+            MIDDLE: 1,  // 중간 버튼: ZOOM
+            RIGHT: 0    // 오른쪽 버튼: ROTATE
           }}
+          rotateSpeed={0.5}
         />
         <Stars />
       </Canvas>
