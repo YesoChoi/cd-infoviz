@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import * as S from './styles'
 
 const BUTTONS = [
-  { id: 'total', label: 'total workers' },
-  { id: 'line', label: 'line workers' },
-  { id: 'female', label: 'female workers' },
-  { id: 'migrant', label: 'migrant workers' }
+  { id: 'total', label: 'TOTAL' },
+  { id: 'line', label: 'LINE' },
+  { id: 'female', label: 'FEMALE' },
+  { id: 'migrant', label: 'MIGRANT' }
 ]
 
 const COUNTRIES = [
-  'vietnam', 'thailand', 'taiwan', 'south korea',
-  'japan', 'indonesia', 'india', 'china'
+  'VIETNAM', 'THAILAND', 'TAIWAN', 'SOUTH KOREA',
+  'JAPAN', 'INDONESIA', 'INDIA', 'CHINA'
 ]
 
 export default function UI({
@@ -27,11 +27,31 @@ export default function UI({
     )
   }
 
-  console.log(countries)
-
   return (
     <S.UIContainer>
-      {workerType && (
+      <div>
+        <S.ContainerLabel>
+          <S.Icon src="/icon/ic_round-people.svg" /> WORKERS TYPE
+        </S.ContainerLabel>
+        <S.ChipContainer>
+          {BUTTONS.map(button => (
+            <S.Chip
+              key={button.id}
+              onClick={() => {
+                setWorkerType(button.id)
+                setCountries([])  // workerType 변경 시 countries 리셋
+              }}
+              selected={workerType === button.id}
+            >
+              {button.label}
+          </S.Chip>
+        ))}
+        </S.ChipContainer>
+      </div>
+      <div>
+        <S.ContainerLabel>
+          <S.Icon src="/icon/ic_token-geo.svg" /> COUNTRIES
+        </S.ContainerLabel>
         <S.ChipContainer>
           {COUNTRIES.map(country => (
             <S.Chip
@@ -43,20 +63,7 @@ export default function UI({
             </S.Chip>
           ))}
         </S.ChipContainer>
-      )}
-      {BUTTONS.map(button => (
-        <S.Button
-          key={button.id}
-          onClick={() => {
-            setWorkerType(button.id)
-            setCountries([])  // workerType 변경 시 countries 리셋
-          }}
-          selected={workerType === button.id}
-        >
-          <S.Dot selected={workerType === button.id} />
-          {button.label}
-        </S.Button>
-      ))}
+      </div>
     </S.UIContainer>
   )
 }   

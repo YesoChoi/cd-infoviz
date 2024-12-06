@@ -1,11 +1,13 @@
 import React, { useMemo, useRef, useState, useEffect } from 'react'
 import { Vector3 } from 'three'
 import { Instance, Box } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
+import workerData from '@/utils/constant/worker-data.json'
 
-const City = ({ position, totalWorkers, country, countries = [], workerType, viewport }) => {
-  if (!workerType) return null;
-
+const City = ({ position, totalWorkers, country, countries = [], workerType, viewport, onHover }) => {
+  const { camera } = useThree()
+  const [isHovered, setIsHovered] = useState(false)
+  
   const time = useRef(0)
   const modelRefs = useRef([])
   const [visibleLayers, setVisibleLayers] = useState(0)
@@ -15,7 +17,7 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
   
   // 모델 개수와 레이어 계산
   const { modelCount, totalLayers } = useMemo(() => {
-    const count = Math.max(1, Math.ceil(totalWorkers / 5000))
+    const count = Math.max(1, Math.ceil(totalWorkers / 3000))
     const layers = Math.ceil(count / 1)
     return { modelCount: count, totalLayers: layers }
   }, [totalWorkers])
@@ -65,8 +67,45 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
     }
   })
 
+  const handlePointerOver = (event) => {
+    event.stopPropagation()
+    setIsHovered(true)
+    // worker-data에서 해당 도시의 데이터 찾기
+    const cityData = workerData.find(data => 
+      data["Country / Region"].toLowerCase() === country.toLowerCase() &&
+      data["Total Workers"] === totalWorkers
+    )
+    
+    if (cityData) {
+      // 3D 좌표를 화면 좌표로 변환
+      const vector = position.clone()
+      vector.project(camera)
+      
+      // 화면 좌표를 픽셀 좌표로 변환
+      const x = (vector.x + 1) * window.innerWidth / 2
+      const y = (-vector.y + 1) * window.innerHeight / 2
+      
+      onHover({ data: cityData, position: { x, y } })
+    }
+  }
+
+  const handlePointerOut = () => {
+    setIsHovered(false)
+    onHover(null)
+  }
+
+  // 색상 결정 로직
+  const getBoxColor = () => {
+    if (isSelected) return "#3B89DB"
+    if (isHovered) return "#D9D9D9" // 호버 시 더 밝은 회색
+    return "#BCBCBC" // 기본 회색
+  }
+
   return (
-    <group>
+    <group
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+    >
       {[...Array(modelCount)].map((_, index) => {
         const radius = 0.008
         const modelsPerLayer = 1
@@ -95,7 +134,10 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
               if (ref) modelRefs.current[index] = ref
             }}
           >
-            <meshStandardMaterial attach="material" color={isSelected ? "#3B89DB" : "#BCBCBC"} />
+            <meshStandardMaterial 
+              attach="material" 
+              color={getBoxColor()}
+            />
           </Box>
         )
       })}

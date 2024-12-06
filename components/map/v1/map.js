@@ -21,7 +21,7 @@ const COORDINATES = [{
 }]
 
 
-const Map = ({ mapUrl, workerType, countries }) => {
+const Map = ({ mapUrl, workerType, countries, onCityHover }) => {
   const mesh = useRef()
   const [meshSize, setMeshSize] = useState({ width: 1, height: 1 })
   const texture = useLoader(TextureLoader, mapUrl)
@@ -123,6 +123,7 @@ const Map = ({ mapUrl, workerType, countries }) => {
           countries={countries}
           workerType={workerType}
           viewport={viewport}
+          onHover={onCityHover}
         />
       ))}
     </group>

@@ -1,5 +1,3 @@
-@import url('https://use.typekit.net/ffk6gta.css');
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -21,7 +19,7 @@ body {
 body {
   color: var(--background);
   background: var(--foreground);
-  font-family: "ivystyle-sans", Arial, Helvetica, sans-serif;
+  font-family: "neue-kabel", Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

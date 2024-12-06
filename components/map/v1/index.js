@@ -5,12 +5,14 @@ import { OrbitControls, Stars } from '@react-three/drei'
 import { MapContainer } from './styles'
 import Map from './map'
 import UI from '@/components/ui'
+import Tooltip from '@/components/ui/hover'
 
 
 const MapScene = ({ mapUrl, onLoad }) => {
 
-  const [workerType, setWorkerType] = useState(null)
+  const [workerType, setWorkerType] = useState('total')
   const [countries, setCountries] = useState([])
+  const [tooltipData, setTooltipData] = useState(null)
 
   useEffect(() => {
     // 텍스처 로딩이 완료되면 호출
@@ -19,6 +21,10 @@ const MapScene = ({ mapUrl, onLoad }) => {
       onLoad?.()
     })
   }, [mapUrl, onLoad])
+
+  const handleCityHover = (data) => {
+    setTooltipData(data)
+  }
 
   return (
     <MapContainer>
@@ -44,7 +50,12 @@ const MapScene = ({ mapUrl, onLoad }) => {
           intensity={0.7} 
           color="white"
         />
-        <Map mapUrl={mapUrl} workerType={workerType} countries={countries} />
+        <Map 
+          mapUrl={mapUrl} 
+          workerType={workerType} 
+          countries={countries} 
+          onCityHover={handleCityHover}
+        />
         <OrbitControls 
           enableZoom={true} 
           enablePan={true} 
@@ -72,6 +83,12 @@ const MapScene = ({ mapUrl, onLoad }) => {
         countries={countries}
         setCountries={setCountries}
       />
+      {tooltipData && (
+        <Tooltip 
+          data={tooltipData.data} 
+          position={tooltipData.position}
+        />
+      )}
     </MapContainer>
   )
 }
