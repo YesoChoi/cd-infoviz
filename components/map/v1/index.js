@@ -75,14 +75,14 @@ const MapScene = ({ mapUrl, onLoad }) => {
           outputColorSpace: THREE.SRGBColorSpace,
         }}
       >
-        <Environment preset="sunset" />
+        <Environment preset="sunset" background />
         <color attach="background" args={[sceneState === 'blackout' ? 'black' : 'black']} />
-        <ambientLight intensity={sceneState === 'blackout' ? 0 : 1} />
-        <directionalLight 
+        {/* <ambientLight intensity={sceneState === 'blackout' ? 0 : 1} /> */}
+        {/* <directionalLight 
           position={[10, 10, 10]} 
           intensity={sceneState === 'blackout' ? 0 : 1} 
           color="white"
-        />
+        /> */}
         <Map 
           mapUrl={mapUrl} 
           workerType={workerType} 
