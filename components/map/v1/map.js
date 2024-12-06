@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useMemo } from 'react'
 import { Canvas, useLoader, useThree } from '@react-three/fiber'
 import { TextureLoader, DoubleSide, Vector3, NearestFilter, LinearMipmapLinearFilter, SRGBColorSpace } from 'three'
 import workerData from '@/utils/constant/worker-data.json'
-import City from './city-box'
+import City from './models/city-nike-model'
 
 
 const COORDINATES = [{

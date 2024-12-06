@@ -77,10 +77,10 @@ const MapScene = ({ mapUrl, onLoad }) => {
       >
         <Environment preset="sunset" />
         <color attach="background" args={[sceneState === 'blackout' ? 'black' : 'black']} />
-        <ambientLight intensity={sceneState === 'blackout' ? 0 : 2} />
+        <ambientLight intensity={sceneState === 'blackout' ? 0 : 1} />
         <directionalLight 
           position={[10, 10, 10]} 
-          intensity={sceneState === 'blackout' ? 0 : 3} 
+          intensity={sceneState === 'blackout' ? 0 : 1} 
           color="white"
         />
         <Map 
