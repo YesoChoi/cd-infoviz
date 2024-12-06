@@ -70,32 +70,18 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
   const handlePointerOver = (event) => {
     event.stopPropagation()
     setIsHovered(true)
-    
-    // Match the lookup logic from Map component
-    const cityData = workerData.find(data => {
-      let workerCount;
-      switch(workerType) {
-        case 'line':
-          workerCount = data["Line Workers"];
-          break;
-        case 'female':
-          workerCount = data["Female Workers"];
-          break;
-        case 'migrant':
-          workerCount = data["Migrant Workers"];
-          break;
-        case 'total':
-        default:
-          workerCount = data["Total Workers"];
-      }
-      return data["Country / Region"].toLowerCase() === country.toLowerCase() && 
-             workerCount === totalWorkers;
-    });
+    // worker-data에서 해당 도시의 데이터 찾기
+    const cityData = workerData.find(data => 
+      data["Country / Region"].toLowerCase() === country.toLowerCase() &&
+      data["Total Workers"] === totalWorkers
+    )
     
     if (cityData) {
+      // 3D 좌표를 화면 좌표로 변환
       const vector = position.clone()
       vector.project(camera)
       
+      // 화면 좌표를 픽셀 좌표로 변환
       const x = (vector.x + 1) * window.innerWidth / 2
       const y = (-vector.y + 1) * window.innerHeight / 2
       

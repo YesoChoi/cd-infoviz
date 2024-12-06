@@ -19,10 +19,13 @@ const IntroContainer = styled.div`
 
 const Line = styled.div`
   font-size: 2rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
+  margin-bottom: 0.75rem;
+  text-align: left;
+  padding-left: ${props => props.indent}px;
+  position: relative;
 `
 
+//각 단어의 페이드인 애니메이션 duration
 const Word = styled.span`
   display: inline-block;
   opacity: 0;
@@ -31,17 +34,29 @@ const Word = styled.span`
   animation-delay: ${props => props.delay}s;
 `
 
-const Credit = styled.div`
+const SkipButton = styled.button`
   position: absolute;
-  bottom: 2rem;
-  right: 2rem;
-  font-size: 0.9rem;
+  bottom: 40px;
+  right: 40px;
+  background: transparent;
+  border: 1px solid hsl(63, 100%, 83%, 25%);
+  background-color: hsl(63, 100%, 83%, 10%);
+  color: #F8FFA7;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
   opacity: 0;
-  animation: ${fadeIn} 0.5s ease forwards;
-  animation-delay: 8s;
+  animation: ${fadeIn} 0.9s ease forwards;
+  animation-delay: 1s;
+
+  &:hover {
+    background: hsl(63, 100%, 83%, 40%);
+  }
 `
 
-const Intro = () => {
+const Intro = ({ onSkip }) => {
+  
   const lines = [
     "How many people are in my Nike shoes?",
     "Hidden hands behind every step.",
@@ -51,14 +66,16 @@ const Intro = () => {
 
   const renderLine = (text, lineIndex) => {
     const words = text.split(' ')
-    const baseDelay = lineIndex * 2 // 각 라인은 2초 간격으로 시작
-
+    const baseDelay = lineIndex * 2.85 // 각 라인은 2.85초 간격
+    
+    const indents = [0, 120, 0, 240] // 각 라인의 들여쓰기 픽셀값
+    
     return (
-      <Line key={lineIndex}>
+      <Line key={lineIndex} indent={indents[lineIndex]}>
         {words.map((word, wordIndex) => (
           <Word
             key={`${lineIndex}-${wordIndex}`}
-            delay={baseDelay + (wordIndex * 0.2)} // 각 단어는 0.2초 간격
+            delay={baseDelay + (wordIndex * 0.3)} // 각 단어 사이의 간격 (0.3초)
           >
             {word}
           </Word>
@@ -70,7 +87,9 @@ const Intro = () => {
   return (
     <IntroContainer>
       {lines.map((line, index) => renderLine(line, index))}
-      <Credit>A project by Yeso Choi</Credit>
+      <SkipButton onClick={onSkip}>
+        Skip
+      </SkipButton>
     </IntroContainer>
   )
 }

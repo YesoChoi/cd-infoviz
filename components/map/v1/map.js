@@ -21,7 +21,7 @@ const COORDINATES = [{
 }]
 
 
-const Map = ({ mapUrl, workerType, countries, onCityHover }) => {
+const Map = ({ mapUrl, workerType, countries, onCityHover, visible, sceneState }) => {
   const mesh = useRef()
   const [meshSize, setMeshSize] = useState({ width: 1, height: 1 })
   const texture = useLoader(TextureLoader, mapUrl)
@@ -106,7 +106,7 @@ const Map = ({ mapUrl, workerType, countries, onCityHover }) => {
 
   return (
     <group rotation={[- Math.PI * 0.3, 0, 0]}>
-      <mesh ref={mesh} position={[0, 0, 0]}>
+      <mesh ref={mesh} position={[0, 0, 0]} visible={visible}>
         <planeGeometry args={[1, 1]} />
         <meshBasicMaterial 
           map={texture} 
@@ -114,7 +114,7 @@ const Map = ({ mapUrl, workerType, countries, onCityHover }) => {
           toneMapped={false}
         />
       </mesh>
-      {citiesWithPositionsAndWorkers.map((city, index) => (
+      {sceneState === 'ready' && citiesWithPositionsAndWorkers.map((city, index) => (
         <City 
           key={index} 
           totalWorkers={city.totalWorkers}
@@ -124,6 +124,7 @@ const Map = ({ mapUrl, workerType, countries, onCityHover }) => {
           workerType={workerType}
           viewport={viewport}
           onHover={onCityHover}
+          delay={index * 100}
         />
       ))}
     </group>

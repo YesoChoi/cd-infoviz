@@ -10,6 +10,8 @@ export const TooltipContainer = styled.div`
   z-index: 1000;
   transform: translate(-50%, -100%);
   margin-top: -10px;
+
+  transition: opacity 0.3s ease-in-out, transform 1s ease-in-out;
 `;
 
 export const Title = styled.div`

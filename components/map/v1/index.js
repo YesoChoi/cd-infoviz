@@ -1,7 +1,7 @@
-import React,  {useState, useEffect } from 'react'
+import React,  {useState, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
-import { OrbitControls, Stars } from '@react-three/drei'
+import { OrbitControls, Stars , Environment} from '@react-three/drei'
 import { MapContainer } from './styles'
 import Map from './map'
 import UI from '@/components/ui'
@@ -13,12 +13,44 @@ const MapScene = ({ mapUrl, onLoad }) => {
   const [workerType, setWorkerType] = useState('total')
   const [countries, setCountries] = useState([])
   const [tooltipData, setTooltipData] = useState(null)
+  const [sceneState, setSceneState] = useState('loading') // loading, blackout, zoomIn, ready
+  const controlsRef = useRef()
 
   useEffect(() => {
-    // 텍스처 로딩이 완료되면 호출
     const textureLoader = new THREE.TextureLoader()
     textureLoader.load(mapUrl, () => {
-      onLoad?.()
+      setSceneState('blackout')
+      
+      setTimeout(() => {
+        setSceneState('zoomIn')
+        
+        if (controlsRef.current) {
+          const startZoom = controlsRef.current.target.distanceTo(controlsRef.current.object.position)
+          const targetZoom = startZoom * 0.9
+          
+          const zoomDuration = 1000
+          const startTime = Date.now()
+          
+          const animateZoom = () => {
+            const elapsed = Date.now() - startTime
+            const progress = Math.min(elapsed / zoomDuration, 1)
+            
+            if (controlsRef.current) {
+              controlsRef.current.object.position.z = startZoom + (targetZoom - startZoom) * progress
+              controlsRef.current.update()
+            }
+            
+            if (progress < 1) {
+              requestAnimationFrame(animateZoom)
+            } else {
+              setSceneState('ready')
+              onLoad?.()
+            }
+          }
+          
+          animateZoom()
+        }
+      }, 500)
     })
   }, [mapUrl, onLoad])
 
@@ -33,7 +65,7 @@ const MapScene = ({ mapUrl, onLoad }) => {
           position: [0, 0, 1], 
           fov: 50,
           near: 0.01,
-          far: 1000
+          far: 10000
         }}
         shadows
         gl={{ 
@@ -43,11 +75,12 @@ const MapScene = ({ mapUrl, onLoad }) => {
           outputColorSpace: THREE.SRGBColorSpace,
         }}
       >
-        <color attach="background" args={['black']} />
-        <ambientLight intensity={0.9} />
+        <Environment preset="sunset" />
+        <color attach="background" args={[sceneState === 'blackout' ? 'black' : 'black']} />
+        <ambientLight intensity={sceneState === 'blackout' ? 0 : 2} />
         <directionalLight 
           position={[10, 10, 10]} 
-          intensity={0.7} 
+          intensity={sceneState === 'blackout' ? 0 : 3} 
           color="white"
         />
         <Map 
@@ -55,38 +88,34 @@ const MapScene = ({ mapUrl, onLoad }) => {
           workerType={workerType} 
           countries={countries} 
           onCityHover={handleCityHover}
+          visible={sceneState !== 'blackout'}
+          sceneState={sceneState}
         />
         <OrbitControls 
+          ref={controlsRef}
           enableZoom={true} 
           enablePan={true} 
           enableRotate={true}
-          // 모든 제한 설정 주석 처리
-          // minDistance={0.6}
-          // maxDistance={10}
-          // zoomSpeed={0.5}
-          // minPolarAngle={Math.PI * 0.3}
-          // maxPolarAngle={Math.PI * 0.5 *10}
-          // minAzimuthAngle={-Math.PI * 0.1}
-          // maxAzimuthAngle={Math.PI * 0.1}
           mouseButtons={{
-            LEFT: 2,    // 왼쪽 마우스 버튼: PAN
-            MIDDLE: 1,  // 중간 버튼: ZOOM
-            RIGHT: 0    // 오른쪽 버튼: ROTATE
+            LEFT: 2,
+            MIDDLE: 1,
+            RIGHT: 0
           }}
-          // rotateSpeed={0.5}
         />
         <Stars />
       </Canvas>
-      <UI 
-        workerType={workerType}
-        setWorkerType={setWorkerType}
-        countries={countries}
-        setCountries={setCountries}
-      />
-      {tooltipData && (
+      {sceneState === 'ready' && (
+        <UI 
+          workerType={workerType}
+          setWorkerType={setWorkerType}
+          countries={countries}
+          setCountries={setCountries}
+        />
+      )}
+      { sceneState === 'ready' && (
         <Tooltip 
-          data={tooltipData.data} 
-          position={tooltipData.position}
+        tooltipData={tooltipData} 
+
         />
       )}
     </MapContainer>
