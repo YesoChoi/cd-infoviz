@@ -1,12 +1,13 @@
 import React,  {useState, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
-import { OrbitControls, Stars , Environment} from '@react-three/drei'
+import { OrbitControls, Stars , Environment } from '@react-three/drei'
 import { MapContainer } from './styles'
 import Map from './map'
 import UI from '@/components/ui'
 import Tooltip from '@/components/ui/hover'
-import Background from './background'
+import Background from './background/bg-image'
+import BackgroundColor from './background/bg-color'
 
 const MapScene = ({ mapUrl, bgUrl, onLoad }) => {
 
@@ -75,7 +76,7 @@ const MapScene = ({ mapUrl, bgUrl, onLoad }) => {
           outputColorSpace: THREE.SRGBColorSpace,
         }}
       >
-        <color attach="background" args={[sceneState === 'blackout' ? 'black' : 'black']} />
+        <BackgroundColor />
         <Background bgUrl={bgUrl} />
         <ambientLight intensity={sceneState === 'blackout' ? 0 : 1} />
         <directionalLight 
@@ -102,7 +103,6 @@ const MapScene = ({ mapUrl, bgUrl, onLoad }) => {
             RIGHT: 0
           }}
         />
-        <Stars />
       </Canvas>
       {sceneState === 'ready' && (
         <UI 
@@ -112,11 +112,8 @@ const MapScene = ({ mapUrl, bgUrl, onLoad }) => {
           setCountries={setCountries}
         />
       )}
-      { sceneState === 'ready' && (
-        <Tooltip 
-        tooltipData={tooltipData} 
-
-        />
+      {sceneState === 'ready' && (
+        <Tooltip tooltipData={tooltipData} />
       )}
     </MapContainer>
   )

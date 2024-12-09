@@ -7,12 +7,7 @@ export const MapContainer = styled.div`
   background-color: black;
   position: relative;
 
-  canvas{
-    ${WholeContainer}
-    height: 100vh;
-  }
-
-  backgroundCanvas{
+  canvas {
     ${WholeContainer}
     height: 100vh;
   }

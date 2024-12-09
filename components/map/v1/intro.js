@@ -27,7 +27,7 @@ const Line = styled.div`
   font-size: 2rem;
   margin-bottom: 0.75rem;
   text-align: left;
-  padding-left: ${props => props.indent}px;
+  padding-left: ${props => props.$indent}px;
   position: relative;
 `
 
@@ -37,7 +37,7 @@ const Word = styled.span`
   opacity: 0;
   margin-right: 0.5rem;
   animation: ${fadeIn} 0.9s ease forwards;
-  animation-delay: ${props => props.delay}s;
+  animation-delay: ${props => props.$delay}s;
 `
 
 const SkipButton = styled.button`
@@ -76,11 +76,11 @@ const Intro = ({ onSkip }) => {
     const indents = [0, 120, 0, 240] // 각 라인의 들여쓰기 픽셀값
     
     return (
-      <Line key={lineIndex} indent={indents[lineIndex]}>
+      <Line key={lineIndex} $indent={indents[lineIndex]}>
         {words.map((word, wordIndex) => (
           <Word
             key={`${lineIndex}-${wordIndex}`}
-            delay={baseDelay + (wordIndex * 0.3)} // 각 단어 사이의 간격 (0.3초)
+            $delay={baseDelay + (wordIndex * 0.3)}
           >
             {word}
           </Word>

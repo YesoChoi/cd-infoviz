@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import MapScene from '@/components/map/v1'
 import Intro from '@/components/map/v1/intro'
 import * as THREE from 'three'
-import Background from '@/components/map/v1/background'
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -21,7 +20,8 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const mapUrl = '/texture/map_texture.png'
-const bgUrl = '/texture/dummy.mp4'
+// const bgUrl = '/texture/dummy.mp4'
+const bgUrl = '/texture/bg-01.jpg'
 
 const V3Page = () => {
   const [isLoading, setIsLoading] = useState(true)

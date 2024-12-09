@@ -2,14 +2,16 @@ import styled from 'styled-components'
 
 export const UIContainer = styled.div`
   position: absolute;
-  right: 2rem;
-  top: 2rem;
+  right: 0rem;
+  top: 0rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   max-width: 200px;
+  height: 100vh;
   padding: 1rem;
-  border-radius: 1rem;
+  border-radius: 0rem;
+  background-color: #E1F8AF;
 `
 
 export const ContainerLabel = styled.div`
