@@ -6,9 +6,9 @@ import { MapContainer } from './styles'
 import Map from './map'
 import UI from '@/components/ui'
 import Tooltip from '@/components/ui/hover'
+import Background from './background'
 
-
-const MapScene = ({ mapUrl, onLoad }) => {
+const MapScene = ({ mapUrl, bgUrl, onLoad }) => {
 
   const [workerType, setWorkerType] = useState('total')
   const [countries, setCountries] = useState([])
@@ -75,8 +75,8 @@ const MapScene = ({ mapUrl, onLoad }) => {
           outputColorSpace: THREE.SRGBColorSpace,
         }}
       >
-        {/* <Environment preset="night" background /> */}
         <color attach="background" args={[sceneState === 'blackout' ? 'black' : 'black']} />
+        <Background bgUrl={bgUrl} />
         <ambientLight intensity={sceneState === 'blackout' ? 0 : 1} />
         <directionalLight 
           position={[10, 10, 10]} 

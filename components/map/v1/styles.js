@@ -11,5 +11,9 @@ export const MapContainer = styled.div`
     ${WholeContainer}
     height: 100vh;
   }
-`
 
+  backgroundCanvas{
+    ${WholeContainer}
+    height: 100vh;
+  }
+`
