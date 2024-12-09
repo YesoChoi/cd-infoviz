@@ -1,10 +1,15 @@
 import { Suspense } from 'react'
 import { useAspect, useVideoTexture, useTexture } from '@react-three/drei'
+import { useThree } from '@react-three/fiber'
 
 export default function Background({ bgUrl }) {
-  const size = useAspect(1920, 1080)
+  const { viewport } = useThree()
+  
+  // viewport 크기보다 더 크게 설정 (예: 1.5배)
+  const scale = [viewport.width * 4, viewport.height * 4, 1]
+  
   return (
-    <mesh scale={size} position={[0, 0, -2]}>
+    <mesh scale={scale} position={[0, 0, -0.5]}>
       <planeGeometry />
       <Suspense fallback={<FallbackMaterial url="/texture/map_texture.png" />}>
         <VideoMaterial url={bgUrl} />
