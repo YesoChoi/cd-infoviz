@@ -12,3 +12,4 @@ export const MapContainer = styled.div`
     height: 100vh;
   }
 `
+

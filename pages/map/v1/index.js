@@ -29,9 +29,18 @@ const V3Page = () => {
     }
   }, [isIntroComplete])
 
+  // Skip 버튼 핸들러 추가
+  const handleSkip = () => {
+    setIsIntroComplete(true)
+  }
+
   return (
     <div style={{ height: '100%', overflow: 'hidden' }}>
-      {isLoading ? <Intro /> : <MapScene mapUrl={mapUrl} />}
+      {isLoading ? (
+        <Intro onSkip={handleSkip} />
+      ) : (
+        <MapScene mapUrl={mapUrl} />
+      )}
     </div>
   )
 }

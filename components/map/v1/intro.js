@@ -6,6 +6,12 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `
 
+const blink = keyframes`
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+`
+
 const IntroContainer = styled.div`
   height: 100vh;
   display: flex;
@@ -36,23 +42,22 @@ const Word = styled.span`
 
 const SkipButton = styled.button`
   position: absolute;
-  bottom: 40px;
-  right: 40px;
+  bottom: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: transparent;
-  border: 1px solid hsl(63, 100%, 83%, 25%);
-  background-color: hsl(63, 100%, 83%, 10%);
-  color: #F8FFA7;
-  padding: 10px 20px;
+  border: none;
+  color: hsl(63, 100%, 83%, 70%);
   cursor: pointer;
   font-size: 1rem;
+  text-decoration: underline;
   transition: all 0.3s ease;
   opacity: 0;
-  animation: ${fadeIn} 0.9s ease forwards;
-  animation-delay: 1s;
-
-  &:hover {
-    background: hsl(63, 100%, 83%, 40%);
-  }
+  animation: 
+    ${fadeIn} 0.9s ease forwards,
+    ${blink} 2s ease-in-out infinite;
+  animation-delay: 1s, 2s;
 `
 
 const Intro = ({ onSkip }) => {
