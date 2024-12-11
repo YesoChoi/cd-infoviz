@@ -14,7 +14,18 @@ export const UIContainer = styled.div`
   background-color: #E1F8AF;
 `
 
-export const ContainerLabel = styled.div`
+export const ContainerLabel1 = styled.div`
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 120%;
+  color: #2B2839;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`
+
+export const ContainerLabel2 = styled.div`
   font-size: 0.875rem;
   font-weight: 600;
   color: #2B2839;
@@ -24,50 +35,58 @@ export const ContainerLabel = styled.div`
   gap: 0.5rem;
 `
 
-export const Button = styled.button`
-  background: ${({ selected }) => (selected ? '#F8FFA7' : 'rgba(255, 255, 255, 0.1)')};
-  border: none;
-  border-radius: 1rem;
-  padding: 0.5rem 1rem;
-  color: black;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  width: 100%;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-`
-
 export const Icon = styled.img`
   width: 16px;
   height: 16px;
   border-radius: 50%;
 `
 
-export const ChipContainer = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 0.5rem;
+  align-self: stretch;
+
+  > div {
+    width: 100%;
+  }
 `
 
-export const Chip = styled.div`
-  background: ${({ selected }) => (selected ? '#F8FFA7' : 'rgba(254, 255, 241, 0.6)')};
-  border-radius: 0.125rem;
-  padding: 0.4rem 0.75rem;
-  color: #2B2839;
-  font-size: 0.875rem;
+export const Button = styled.div`
+  background: ${({ selected }) => (selected ? '#2B2839' : 'none')};
+  display: flex;
+  padding: 0.25rem 0.5rem;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  color: ${({ selected }) => (selected ? '#E1F8AF' : '#9C9C9C')};
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  text-align: center;
+  transition: all 0.3s ease-in-out;
+  border-top: ${({ selected }) => (selected ? 'none' : '1px solid #2B2839')};
+`
 
-    &:hover {
-    background: ${({ selected }) => (selected ? '#E6E68A' : 'rgba(254, 255, 241, 0.8)')};
-    transform: scale(1.0125);
+export const ButtonInfo = styled.div` 
+  display: flex;
+  flex-direction: column;
+  padding: 0em 0.5rem 2rem;
+  align-items: flex-start;
+  align-self: stretch;
+`
+
+export const h1 = styled.h1`
+  color: #2B2839;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+`
+
+export const caption = styled.caption`
+  color: #2B2839;
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-height: 100%;
+  text-align: left;
 `
