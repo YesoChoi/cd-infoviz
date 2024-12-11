@@ -21,7 +21,7 @@ const COORDINATES = [{
 }]
 
 
-const Map = ({ mapUrl, workerType, countries, onCityHover, visible, sceneState }) => {
+const Map = ({ mapUrl, workerType, selectedCountry, onCityHover, visible, sceneState }) => {
   const mesh = useRef()
   const [meshSize, setMeshSize] = useState({ width: 1, height: 1 })
   const texture = useLoader(TextureLoader, mapUrl)
@@ -120,7 +120,7 @@ const Map = ({ mapUrl, workerType, countries, onCityHover, visible, sceneState }
           totalWorkers={city.totalWorkers}
           position={city.position}
           country={city.country}
-          countries={countries}
+          selectedCountry={selectedCountry}
           workerType={workerType}
           viewport={viewport}
           onHover={onCityHover}

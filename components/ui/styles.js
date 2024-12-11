@@ -64,16 +64,17 @@ export const Button = styled.div`
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.1s ease-in-out;
   border-top: ${({ selected }) => (selected ? 'none' : '1px solid #2B2839')};
 `
 
 export const ButtonInfo = styled.div` 
   display: flex;
   flex-direction: column;
-  padding: 0em 0.5rem 2rem;
+  padding: 0.2rem 0.5rem 1rem;
   align-items: flex-start;
   align-self: stretch;
+  gap: 1rem;
 `
 
 export const h1 = styled.h1`
@@ -87,6 +88,6 @@ export const caption = styled.caption`
   color: #2B2839;
   font-size: 0.75rem;
   font-weight: 400;
-  font-height: 100%;
+  line-height: 100%;
   text-align: left;
 `

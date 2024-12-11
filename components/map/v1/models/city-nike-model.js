@@ -6,7 +6,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import NikeModel from './model'
 import workerData from '@/utils/constant/worker-data.json'
 
-const City = ({ position, totalWorkers, country, countries = [], workerType, viewport, onHover }) => {
+const City = ({ position, totalWorkers, country, selectedCountry, workerType, viewport, onHover }) => {
   if (!workerType) return null;
 
   const { camera } = useThree()
@@ -16,7 +16,7 @@ const City = ({ position, totalWorkers, country, countries = [], workerType, vie
   const [visibleLayers, setVisibleLayers] = useState(0)
   const spotLightRef = useRef()
   
-  const isSelected = countries.length > 0 && countries.includes(country.toLowerCase())
+  const isSelected = selectedCountry === country
   
   const { modelCount, totalLayers } = useMemo(() => {
     const count = Math.max(1, Math.ceil(totalWorkers / 5000))

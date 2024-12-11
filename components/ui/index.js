@@ -7,7 +7,7 @@ const BUTTONS = [
     id: 'total', 
     label: 'Total',
     dataKey: 'Total Workers',
-    caption: 'All workers in Nike shoe manufacturing facilities'
+    caption: 'All workers in Nike shoes manufacturing facilities'
   },
   { 
     id: 'line', 
@@ -37,15 +37,11 @@ const COUNTRIES = [
 export default function UI({
   workerType,
   setWorkerType,
-  countries,
-  setCountries
+  selectedCountry,
+  setSelectedCountry
 }) {
   const toggleChip = (country) => {
-    setCountries(prev =>
-      prev.includes(country)
-        ? prev.filter(c => c !== country)
-        : [...prev, country]
-    )
+    setSelectedCountry(selectedCountry === country ? '' : country)
   }
 
   const calculateWorkerSum = (buttonId) => {
@@ -66,7 +62,7 @@ export default function UI({
               <S.Button
                 onClick={() => {
                 setWorkerType(button.id)
-                setCountries([])
+                setSelectedCountry('')
               }}
               selected={workerType === button.id}
             >
@@ -91,7 +87,7 @@ export default function UI({
             <S.Button
               key={country}
               onClick={() => toggleChip(country)}
-              selected={countries.includes(country)}
+              selected={selectedCountry === country}
             >
               {country}
             </S.Button>

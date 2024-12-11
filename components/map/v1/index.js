@@ -12,7 +12,7 @@ import BackgroundColor from './background/bg-color'
 const MapScene = ({ mapUrl, bgUrl, onLoad }) => {
 
   const [workerType, setWorkerType] = useState('total')
-  const [countries, setCountries] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState('')
   const [tooltipData, setTooltipData] = useState(null)
   const [sceneState, setSceneState] = useState('loading') // loading, blackout, zoomIn, ready
   const controlsRef = useRef()
@@ -87,7 +87,7 @@ const MapScene = ({ mapUrl, bgUrl, onLoad }) => {
         <Map 
           mapUrl={mapUrl} 
           workerType={workerType} 
-          countries={countries} 
+          selectedCountry={selectedCountry}
           onCityHover={handleCityHover}
           visible={sceneState !== 'blackout'}
           sceneState={sceneState}
@@ -108,8 +108,8 @@ const MapScene = ({ mapUrl, bgUrl, onLoad }) => {
         <UI 
           workerType={workerType}
           setWorkerType={setWorkerType}
-          countries={countries}
-          setCountries={setCountries}
+          selectedCountry={selectedCountry}
+          setSelectedCountry={setSelectedCountry}
         />
       )}
       {sceneState === 'ready' && (
