@@ -71,7 +71,7 @@ const City = ({ position, totalWorkers, country, selectedCountry, workerType, vi
     setIsHovered(true)
     
     const cityData = workerData.find(data => 
-      data["Country / Region"].toLowerCase() === country.toLowerCase() &&
+      data["Country / Region"] === country &&
       data["Total Workers"] === totalWorkers
     )
     

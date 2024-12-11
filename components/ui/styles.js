@@ -12,6 +12,7 @@ export const UIContainer = styled.div`
   padding: 1rem;
   border-radius: 0rem;
   background-color: #E1F8AF;
+  gap: 4rem;
 `
 
 export const ContainerLabel1 = styled.div`
@@ -90,4 +91,29 @@ export const caption = styled.caption`
   font-weight: 400;
   line-height: 100%;
   text-align: left;
+`
+
+export const ButtonCountryContainer = styled.div`
+  
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 0.5rem;
+  align-self: stretch;
+  flex-wrap: wrap;
+  bottom: 0;
+`
+export const ButtonCountry = styled.div`
+  background: ${({ selected }) => (selected ? '#C5C3D1' : 'none')};
+  display: flex;
+  padding: 0.125rem 0.5rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  color: #2B2839;
+  border: 1px solid #2B2839;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
 `

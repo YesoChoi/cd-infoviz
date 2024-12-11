@@ -30,8 +30,8 @@ const BUTTONS = [
 ]
 
 const COUNTRIES = [
-  'VIETNAM', 'THAILAND', 'TAIWAN', 'SOUTH KOREA',
-  'JAPAN', 'INDONESIA', 'INDIA', 'CHINA'
+  'Vietnam', 'Thailand', 'Taiwan', 'South Korea',
+  'Japan', 'Indonesia', 'India', 'China'
 ]
 
 export default function UI({
@@ -40,7 +40,7 @@ export default function UI({
   selectedCountry,
   setSelectedCountry
 }) {
-  const toggleChip = (country) => {
+  const toggleCountry = (country) => {
     setSelectedCountry(selectedCountry === country ? '' : country)
   }
 
@@ -80,19 +80,19 @@ export default function UI({
       </div>
       <div>
         <S.ContainerLabel2>
-          <S.Icon src="/icon/ic_token-geo.svg" /> COUNTRIES
+          <S.Icon src="/icon/ic_token-geo.svg" /> Countries
         </S.ContainerLabel2>
-        <S.ButtonContainer>
+        <S.ButtonCountryContainer>
           {COUNTRIES.map(country => (
-            <S.Button
+            <S.ButtonCountry
               key={country}
-              onClick={() => toggleChip(country)}
+              onClick={() => toggleCountry(country)}
               selected={selectedCountry === country}
             >
               {country}
-            </S.Button>
+            </S.ButtonCountry>
           ))}
-        </S.ButtonContainer>
+        </S.ButtonCountryContainer>
       </div>
     </S.UIContainer>
   )
