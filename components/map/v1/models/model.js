@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect, useMemo, useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
+import { MeshStandardMaterial } from 'three'
 
 const PATH01 = '/3d-model/nike04/nikeModel-mono-01.glb'
 const PATH02 = '/3d-model/nike04/nikeModel-mono-02.glb'
@@ -18,24 +19,42 @@ const NikeModel = forwardRef(({ modelIdx = 1, isSelected, ...props }, ref) => {
 
   const { nodes, materials } = useGLTF(modelPath)
   
-  // Random rotation speeds for each axis
+  // 각 인스턴스별로 독립적인 materials 생성
+  const instanceMaterials = useMemo(() => {
+    const newMaterials = {}
+    Object.entries(materials).forEach(([key, mat]) => {
+      newMaterials[key] = mat.clone() // material을 복제하여 독립적인 인스턴스 생성
+    })
+    return newMaterials
+  }, [materials])
+
   const rotationSpeeds = useRef({
     x: Math.random() * 0.5 - 1,
     y: Math.random() * 0.5 - 1,
     z: Math.random() * 0.5 - 1
   }).current
 
-  // Reference for the group that will be rotated
   const groupRef = useRef()
 
   useFrame((state, delta) => {
     if (groupRef.current) {
-      // Smooth rotation animation
       groupRef.current.rotation.x += rotationSpeeds.x * delta
       groupRef.current.rotation.y += rotationSpeeds.y * delta
       groupRef.current.rotation.z += rotationSpeeds.z * delta
     }
   })
+
+  useEffect(() => {
+    Object.values(instanceMaterials).forEach(material => {
+      if (isSelected) {
+        material.emissive.setHex(0x00ff00)
+        material.emissiveIntensity = 0.5
+      } else {
+        material.emissive.setHex(0x000000)
+        material.emissiveIntensity = 0
+      }
+    })
+  }, [isSelected, instanceMaterials])
 
   return (
     <group ref={ref} {...props}>
@@ -49,43 +68,43 @@ const NikeModel = forwardRef(({ modelIdx = 1, isSelected, ...props }, ref) => {
           castShadow
           receiveShadow
           geometry={nodes.Plane012.geometry}
-          material={materials['Material.001']}
+          material={instanceMaterials['Material.001']}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Plane012_1.geometry}
-          material={materials['Material.006']}
+          material={instanceMaterials['Material.006']}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Plane012_2.geometry}
-          material={materials['Material.002']}
+          material={instanceMaterials['Material.002']}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Plane012_3.geometry}
-          material={materials.SVGMat}
+          material={instanceMaterials['SVGMat']}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Plane012_4.geometry}
-          material={materials['Material.005']}
+          material={instanceMaterials['Material.005']}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Plane012_5.geometry}
-          material={materials['SVGMat.002']}
+          material={instanceMaterials['SVGMat.002']}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Plane012_6.geometry}
-          material={materials['Material.004']}
+          material={instanceMaterials['Material.004']}
         />
       </group>
     </group>
