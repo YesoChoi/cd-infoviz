@@ -19,9 +19,8 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const bgUrls = Array.from({ length: 20 }, (_, i) => `/bg-img/worker-img/workerImg-${i + 1}.webp`)
 const mapUrl = '/texture/map_texture.png'
-// const bgUrl = '/texture/dummy.mp4'
-const bgUrl = '/texture/bg-01.jpg'
 
 const V3Page = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -57,7 +56,7 @@ const V3Page = () => {
       {isLoading ? (
         <Intro onSkip={handleSkip} />
       ) : (
-        <MapScene mapUrl={mapUrl} bgUrl={bgUrl} />
+        <MapScene mapUrl={mapUrl} bgUrls={bgUrls} />
       )}
     </div>
   )

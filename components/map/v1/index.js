@@ -9,7 +9,7 @@ import Tooltip from '@/components/ui/hover'
 import Background from './background/bg-image'
 import BackgroundColor from './background/bg-color'
 
-const MapScene = ({ mapUrl, bgUrl, onLoad }) => {
+const MapScene = ({ mapUrl, bgUrls, onLoad }) => {
 
   const [workerType, setWorkerType] = useState('total')
   const [selectedCountry, setSelectedCountry] = useState('')
@@ -77,7 +77,7 @@ const MapScene = ({ mapUrl, bgUrl, onLoad }) => {
         }}
       >
         <BackgroundColor />
-        <Background bgUrl={bgUrl} />
+        <Background bgUrls={bgUrls} />
         <ambientLight intensity={sceneState === 'blackout' ? 0 : 1} />
         <directionalLight 
           position={[10, 10, 10]} 

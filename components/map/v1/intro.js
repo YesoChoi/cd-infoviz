@@ -82,6 +82,7 @@ const SkipButton = styled.button`
   transition: all 0.3s ease;
   opacity: 0;
   z-index: 100;
+  cursor: pointer;
   animation: 
     ${fadeIn} 0.9s ease forwards,
     ${blink} 2s ease-in-out infinite;
