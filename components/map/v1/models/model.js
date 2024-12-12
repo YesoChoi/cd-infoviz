@@ -7,7 +7,7 @@ const PATH01 = '/3d-model/nike04/nikeModel-mono-01.glb'
 const PATH02 = '/3d-model/nike04/nikeModel-mono-02.glb'
 const PATH03 = '/3d-model/nike04/nikeModel-mono-03.glb'
 
-const NikeModel = forwardRef(({ modelIdx = 1, isSelected, ...props }, ref) => {
+const NikeModel = forwardRef(({ modelIdx = 1, isSelected, selectedCountry, ...props }, ref) => {
   const modelPath = useMemo(() => {
     switch(modelIdx) {
       case 1: return PATH01
@@ -46,15 +46,23 @@ const NikeModel = forwardRef(({ modelIdx = 1, isSelected, ...props }, ref) => {
 
   useEffect(() => {
     Object.values(instanceMaterials).forEach(material => {
-      if (isSelected) {
-        material.emissive.setHex(0x00ff00)
-        material.emissiveIntensity = 0.5
-      } else {
+      material.transparent = true
+      
+      if (selectedCountry === '') {  // selectedCountry가 비어있는 경우
         material.emissive.setHex(0x000000)
         material.emissiveIntensity = 0
+        material.opacity = 1.0
+      } else if (isSelected) {  // 특정 country가 선택되고, 해당 모델이 선택된 경우
+        material.emissive.setHex(0x000000)
+        material.emissiveIntensity = 0.5
+        material.opacity = 1.0
+      } else {  // 특정 country가 선택되었지만, 해당 모델은 선택되지 않은 경우
+        material.emissive.setHex(0x101010)
+        material.emissiveIntensity = 0.1
+        material.opacity = 0.3
       }
     })
-  }, [isSelected, instanceMaterials])
+  }, [isSelected, instanceMaterials, selectedCountry])  // selectedCountry 의존성 추가
 
   return (
     <group ref={ref} {...props}>

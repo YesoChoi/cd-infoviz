@@ -83,6 +83,7 @@ const MapScene = ({ mapUrl, bgUrls, onLoad }) => {
           position={[10, 10, 10]} 
           intensity={sceneState === 'blackout' ? 0 : 1} 
           color="white"
+          castShadow
         />
         <Map 
           mapUrl={mapUrl} 
