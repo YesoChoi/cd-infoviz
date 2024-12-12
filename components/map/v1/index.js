@@ -114,7 +114,7 @@ const MapScene = ({ mapUrl, bgUrls, onLoad }) => {
         />
       )}
       {sceneState === 'ready' && (
-        <Tooltip tooltipData={tooltipData} />
+        <Tooltip tooltipData={tooltipData} workerType={workerType} />
       )}
     </MapContainer>
   )

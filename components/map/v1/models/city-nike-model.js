@@ -14,6 +14,7 @@ const City = ({ position, totalWorkers, country, selectedCountry, workerType, vi
   const time = useRef(0)
   const modelRefs = useRef([])
   const [visibleLayers, setVisibleLayers] = useState(0)
+  const initialViewportSize = useRef(null)
   
   const isSelected = selectedCountry === country
   
@@ -36,19 +37,51 @@ const City = ({ position, totalWorkers, country, selectedCountry, workerType, vi
     return () => clearInterval(interval)
   }, [workerType, totalLayers])
 
+  useEffect(() => {
+    if (!initialViewportSize.current) {
+      initialViewportSize.current = Math.min(viewport.width, viewport.height)
+    }
+  }, [])
+
   const baseScale = useMemo(() => {
+    if (!initialViewportSize.current) return 0.005
     const baseSize = 0.005
     const viewportFactor = Math.min(viewport.width, viewport.height)
-    return baseSize * viewportFactor
+    return baseSize * (initialViewportSize.current / viewportFactor)
+  }, [viewport])
+
+  const modelParameters = useMemo(() => {
+    if (!initialViewportSize.current) return {
+      radius: 0.008,
+      layerHeight: 0.005,
+      modelsPerLayer: 1
+    }
+    
+    const viewportFactor = Math.min(viewport.width, viewport.height)
+    const scaleFactor = initialViewportSize.current / viewportFactor
+    
+    return {
+      radius: 0.008 * scaleFactor,
+      layerHeight: 0.005 * scaleFactor,
+      modelsPerLayer: 1
+    }
   }, [viewport])
 
   const handlePointerOver = (event) => {
     event.stopPropagation()
     setIsHovered(true)
     
+      // workerType에 따른 데이터 키 매핑
+  const workerTypeMap = {
+    total: "Total Workers",
+    line: "Line Workers",
+    female: "Female Workers",
+    migrant: "Migrant Workers"
+  };
+
     const cityData = workerData.find(data => 
       data["Country / Region"] === country &&
-      data["Total Workers"] === totalWorkers
+      data[workerTypeMap[workerType]] === totalWorkers
     )
     
     if (cityData) {
@@ -58,7 +91,10 @@ const City = ({ position, totalWorkers, country, selectedCountry, workerType, vi
       const x = (vector.x + 1) * window.innerWidth / 2
       const y = (-vector.y + 1) * window.innerHeight / 2
       
-      onHover({ data: cityData, position: { x, y } })
+      onHover({ 
+        data: cityData, 
+        position: { x, y } 
+      })
     }
   }
 
@@ -72,12 +108,8 @@ const City = ({ position, totalWorkers, country, selectedCountry, workerType, vi
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
-
       {[...Array(modelCount)].map((_, index) => {
-        const radius = 0.008
-        const modelsPerLayer = 1
-        const layerHeight = 0.005
-
+        const { radius, layerHeight, modelsPerLayer } = modelParameters
         const layer = Math.floor(index / modelsPerLayer)
         const indexInLayer = index % modelsPerLayer 
 
