@@ -1,15 +1,39 @@
 import { useTexture } from '@react-three/drei'
-import { useThree } from '@react-three/fiber'
+import { useThree, useFrame } from '@react-three/fiber'
 import { useMemo, useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
 
 export default function Background({ bgUrls, count = 100 }) {
   const { viewport } = useThree()
-  const meshRef = useRef()
+  const meshRefs = useRef([])
   const [textureIndices, setTextureIndices] = useState([])
   
   const textures = useTexture(bgUrls)
-  const scale = [viewport.width/4, viewport.height/4, 1]
+  const baseWidth = viewport.width / 4
+  
+  // 각 이미지마다 다른 회전 속도를 가지도록 설정
+  const rotationSpeeds = useMemo(() => {
+    return Array(count).fill().map(() => 
+      (Math.random() * 0.001) - 0.001 // -0.0005 ~ 0.0005 사이의 랜덤한 속도
+    )
+  }, [count])
+  
+  // 회전 애니메이션
+  useFrame(() => {
+    meshRefs.current.forEach((mesh, index) => {
+      if (mesh) {
+        mesh.rotation.y += rotationSpeeds[index]
+      }
+    })
+  })
+  
+  const getScaleForTexture = (textureIndex) => {
+    const texture = Array.isArray(textures) ? textures[textureIndex] : textures
+    if (!texture) return [baseWidth, baseWidth, 1]
+    
+    const imageAspect = texture.image.width / texture.image.height
+    return [baseWidth, baseWidth / imageAspect, 1]
+  }
   
   useEffect(() => {
     const gridSize = Math.sqrt(count)
@@ -58,32 +82,39 @@ export default function Background({ bgUrls, count = 100 }) {
           -0.5
         )
         
+        const textureIndex = textureIndices[index]
+        const scale = getScaleForTexture(textureIndex)
+        
         const matrix = temp.clone()
           .setPosition(position)
           .scale(new THREE.Vector3(...scale))
         
         matrices.push({
           matrix,
-          textureIndex: textureIndices[index++]
+          textureIndex
         })
+        index++
       }
     }
     
     return matrices
-  }, [viewport, count, scale, textureIndices])
+  }, [viewport, count, textureIndices, textures])
 
   return (
     <>
       {matrices.map((data, index) => (
         <mesh
           key={index}
+          ref={el => meshRefs.current[index] = el}
           position={[data.matrix.elements[12], data.matrix.elements[13], data.matrix.elements[14]]}
-          scale={scale}
+          scale={getScaleForTexture(data.textureIndex)}
         >
           <planeGeometry />
           <meshBasicMaterial
             map={Array.isArray(textures) ? textures[data.textureIndex] : textures}
             toneMapped={false}
+            transparent={true}
+            opacity={0.5}
           />
         </mesh>
       ))}
