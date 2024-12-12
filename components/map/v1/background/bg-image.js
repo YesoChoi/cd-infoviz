@@ -7,23 +7,42 @@ export default function Background({ bgUrls, count = 100 }) {
   const { viewport } = useThree()
   const meshRefs = useRef([])
   const [textureIndices, setTextureIndices] = useState([])
+  const columnPositions = useRef([])  // 각 column의 y 위치를 추적
   
   const textures = useTexture(bgUrls)
-  const baseWidth = viewport.width / 4
+  const baseWidth = viewport.width / 2
+  const gridSize = Math.sqrt(count)
+  const spacing = viewport.width / 2
   
-  // 각 이미지마다 다른 회전 속도를 가지도록 설정
-  const rotationSpeeds = useMemo(() => {
-    return Array(count).fill().map(() => 
-      (Math.random() * 0.001) - 0.001 // -0.0005 ~ 0.0005 사이의 랜덤한 속도
-    )
-  }, [count])
+  // column 위치 초기화
+  useEffect(() => {
+    columnPositions.current = Array(gridSize).fill(0)
+  }, [gridSize])
   
-  // 회전 애니메이션
+  // 애니메이션 속도 설정
+  const speed = 0.00005
+  
+  // y축 애니메이션
   useFrame(() => {
     meshRefs.current.forEach((mesh, index) => {
-      if (mesh) {
-        mesh.rotation.y += rotationSpeeds[index]
+      if (!mesh) return
+      
+      const columnIndex = Math.floor(index / gridSize)
+      const direction = columnIndex % 2 === 0 ? 1 : -1  // 교차 방향
+      
+      // 현재 column의 y 위치 업데이트
+      columnPositions.current[columnIndex] += speed * direction
+      
+      // 그리드 영역을 벗어났는지 체크
+      const maxOffset = (spacing * gridSize) / 2
+      if (Math.abs(columnPositions.current[columnIndex]) > maxOffset) {
+        columnPositions.current[columnIndex] = -maxOffset * Math.sign(direction)
       }
+      
+      // mesh 위치 업데이트
+      const rowIndex = index % gridSize
+      mesh.position.y = columnPositions.current[columnIndex] + 
+                       (rowIndex - gridSize/2 + 0.5) * spacing
     })
   })
   
@@ -69,9 +88,6 @@ export default function Background({ bgUrls, count = 100 }) {
     
     const temp = new THREE.Matrix4()
     const matrices = []
-    
-    const gridSize = Math.sqrt(count)
-    const spacing = viewport.width / 2
     let index = 0
     
     for(let i = 0; i < gridSize; i++) {
@@ -91,7 +107,8 @@ export default function Background({ bgUrls, count = 100 }) {
         
         matrices.push({
           matrix,
-          textureIndex
+          textureIndex,
+          columnIndex: i  // column 인덱스 추가
         })
         index++
       }
@@ -114,7 +131,7 @@ export default function Background({ bgUrls, count = 100 }) {
             map={Array.isArray(textures) ? textures[data.textureIndex] : textures}
             toneMapped={false}
             transparent={true}
-            opacity={0.5}
+            opacity={0.1}
           />
         </mesh>
       ))}
