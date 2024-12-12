@@ -2,6 +2,7 @@ import React, { forwardRef, useEffect, useMemo, useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { MeshStandardMaterial } from 'three'
+import * as THREE from 'three'
 
 const PATH01 = '/3d-model/nike04/nikeModel-mono-01.glb'
 const PATH02 = '/3d-model/nike04/nikeModel-mono-02.glb'
@@ -35,12 +36,42 @@ const NikeModel = forwardRef(({ modelIdx = 1, isSelected, selectedCountry, ...pr
   }).current
 
   const groupRef = useRef()
+  const initialRotation = useRef([Math.PI / 2, 0, 0])
+  const floatOffset = useRef(Math.random() * Math.PI * 2) // 각 모델의 떠있는 애니메이션 오프셋
 
   useFrame((state, delta) => {
-    if (groupRef.current) {
+    if (!groupRef.current) return
+
+    if (isSelected && selectedCountry) {
+      // 선택된 모델의 애니메이션
+      // 회전을 원래 상태로 부드럽게 되돌림
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(
+        groupRef.current.rotation.x,
+        initialRotation.current[0],
+        0.1
+      )
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(
+        groupRef.current.rotation.y,
+        initialRotation.current[1],
+        0.1
+      )
+      groupRef.current.rotation.z = THREE.MathUtils.lerp(
+        groupRef.current.rotation.z,
+        initialRotation.current[2],
+        0.1
+      )
+
+      // 위아래로 둥둥 떠다니는 애니메이션
+      const floatY = Math.sin(state.clock.elapsedTime * 2 + floatOffset.current) * 0.1
+      groupRef.current.position.y = floatY
+    } else {
+      // 기존의 회전 애니메이션
       groupRef.current.rotation.x += rotationSpeeds.x * delta
       groupRef.current.rotation.y += rotationSpeeds.y * delta
       groupRef.current.rotation.z += rotationSpeeds.z * delta
+      
+      // 위치 초기화
+      groupRef.current.position.y = 0
     }
   })
 

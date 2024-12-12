@@ -88,7 +88,7 @@ const City = ({ position, totalWorkers, country, selectedCountry, workerType, vi
         
         const x = position.x + radius * Math.cos(angle)
         const y = position.y + radius * Math.sin(angle)
-        const z = 0.001 + (layer * layerHeight)
+        const z = 0.008 + (layer * layerHeight)
         
         return (
           <NikeModel
@@ -102,6 +102,7 @@ const City = ({ position, totalWorkers, country, selectedCountry, workerType, vi
             }}
             isSelected={isSelected}
             isHovered={isHovered}
+            selectedCountry={selectedCountry}
           />
         )
       })}
