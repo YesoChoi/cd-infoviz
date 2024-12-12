@@ -1,6 +1,24 @@
 import React from 'react'
+import { useSpring, animated } from '@react-spring/web'
 import * as S from './styles'
 import workerData from '../../utils/constant/worker-data.json'
+
+const AnimatedValue = ({ value }) => {
+  const { number } = useSpring({
+    from: { number: value * 0.8},
+    number: value || 0,
+    delay: 100,
+    config: { mass: 1, tension: 180, friction: 12 }
+  });
+
+  return (
+    <S.h1>
+      <animated.span>
+        {number.to(n => Math.floor(n).toLocaleString())}
+      </animated.span>
+    </S.h1>
+  );
+};
 
 const BUTTONS = [
   { 
@@ -61,19 +79,19 @@ export default function UI({
             <div key={button.id}>
               <S.Button
                 onClick={() => {
-                setWorkerType(button.id)
-                setSelectedCountry('')
-              }}
-              selected={workerType === button.id}
-            >
-              {button.label} Workers
-            </S.Button>
-            {workerType === button.id && (
-              <S.ButtonInfo>
-                <S.h1>{calculateWorkerSum(button.id).toLocaleString()}</S.h1>
-                <S.caption>{button.caption}</S.caption>
-              </S.ButtonInfo>
-            )}
+                  setWorkerType(button.id)
+                  setSelectedCountry('')
+                }}
+                selected={workerType === button.id}
+              >
+                {button.label} Workers
+              </S.Button>
+              {workerType === button.id && (
+                <S.ButtonInfo>
+                  <AnimatedValue value={calculateWorkerSum(button.id)} />
+                  <S.caption>{button.caption}</S.caption>
+                </S.ButtonInfo>
+              )}
             </div>
           ))}
         </S.ButtonContainer>
