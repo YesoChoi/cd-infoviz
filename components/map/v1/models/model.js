@@ -28,14 +28,6 @@ const NikeModel = forwardRef(({ modelIdx = 1, isSelected, ...props }, ref) => {
   // Reference for the group that will be rotated
   const groupRef = useRef()
 
-  useEffect(() => {
-    Object.values(materials).forEach(material => {
-      material.emissive.set(isSelected ? '#404040' : '#202020')
-      material.emissiveIntensity = isSelected ? 1 : 0.3
-      material.needsUpdate = true
-    })
-  }, [isSelected, materials])
-
   useFrame((state, delta) => {
     if (groupRef.current) {
       // Smooth rotation animation

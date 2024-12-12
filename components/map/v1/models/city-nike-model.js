@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState, useEffect } from 'react'
 import { Vector3 } from 'three'
-import { Instance, SpotLight } from '@react-three/drei'
+import { Instance } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 
 import NikeModel from './model'
@@ -14,7 +14,6 @@ const City = ({ position, totalWorkers, country, selectedCountry, workerType, vi
   const time = useRef(0)
   const modelRefs = useRef([])
   const [visibleLayers, setVisibleLayers] = useState(0)
-  const spotLightRef = useRef()
   
   const isSelected = selectedCountry === country
   
@@ -42,29 +41,6 @@ const City = ({ position, totalWorkers, country, selectedCountry, workerType, vi
     const viewportFactor = Math.min(viewport.width, viewport.height)
     return baseSize * viewportFactor
   }, [viewport])
-
-  useFrame((state, delta) => {
-    if (isSelected) {
-      time.current += delta
-      const scale = 1 + Math.sin(time.current * 3) * 0.125
-      modelRefs.current.forEach(ref => {
-        if (ref) {
-          ref.scale.set(
-            scale * baseScale, 
-            scale * baseScale, 
-            scale * baseScale
-          )
-        }
-      })
-    } else {
-      modelRefs.current.forEach(ref => {
-        if (ref) {
-          ref.scale.set(baseScale, baseScale, baseScale)
-        }
-      })
-      time.current = 0
-    }
-  })
 
   const handlePointerOver = (event) => {
     event.stopPropagation()
@@ -96,21 +72,6 @@ const City = ({ position, totalWorkers, country, selectedCountry, workerType, vi
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
-      {isSelected && (
-        <SpotLight
-          ref={spotLightRef}
-          position={[position.x, position.y, position.z + 0.1]}
-          intensity={10}
-          angle={0.1}
-          penumbra={0.1}
-          distance={0.3}
-          color="#ffffff"
-          castShadow
-          decay={2}
-          power={20}
-          target-position={[position.x, position.y, 0]}
-        />
-      )}
 
       {[...Array(modelCount)].map((_, index) => {
         const radius = 0.008
