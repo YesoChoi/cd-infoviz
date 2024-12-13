@@ -13,6 +13,17 @@ export const UIContainer = styled.div`
   border-radius: 0rem;
   background-color: #E1F8AF;
   gap: 4rem;
+
+  @media (max-width: 768px) {
+  width: 100%;
+  max-width: none;
+  height: auto;
+  top: 0;
+  right: auto;
+  left: 0;
+  box-sizing: border-box;
+  gap: 1rem;
+  }
 `
 
 export const ContainerLabel1 = styled.div`
@@ -24,6 +35,11 @@ export const ContainerLabel1 = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
 `
 
 export const ContainerLabel2 = styled.div`
@@ -52,6 +68,10 @@ export const ButtonContainer = styled.div`
   > div {
     width: 100%;
   }
+
+  @media (max-width: 768px) {
+    gap: 0.25rem;
+  }
 `
 
 export const Button = styled.div`
@@ -67,6 +87,11 @@ export const Button = styled.div`
   cursor: pointer;
   transition: all 0.1s ease-in-out;
   border-top: ${({ selected }) => (selected ? 'none' : '1px solid #2B2839')};
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+    margin-bottom: 0.1rem;
+  }
 `
 
 export const ButtonInfo = styled.div` 
@@ -76,6 +101,11 @@ export const ButtonInfo = styled.div`
   align-items: flex-start;
   align-self: stretch;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0.2rem 0.5rem 0.5rem;
+    gap: 0.5rem;
+  }
 `
 
 export const h1 = styled.h1`
@@ -83,6 +113,10 @@ export const h1 = styled.h1`
   text-align: center;
   font-size: 2.5rem;
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+  }
 `
 
 export const caption = styled.caption`
